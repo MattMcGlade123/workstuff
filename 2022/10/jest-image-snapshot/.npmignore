@@ -1,0 +1,20 @@
+# node & npm
+*.log
+
+# github
+.github
+
+# test
+test-results
+__diff_output__
+.jest-cache
+__tests__
+
+# examples
+examples
+
+# doc assets
+images
+
+# IDE
+.idea

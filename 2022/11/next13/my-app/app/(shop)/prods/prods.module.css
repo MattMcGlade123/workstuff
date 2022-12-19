@@ -1,0 +1,6 @@
+.container {
+  padding: 0 2rem;
+  background: gainsboro;
+  border: 1px solid black;
+  display: flex;
+}

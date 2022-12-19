@@ -1,0 +1,29 @@
+.container {
+  padding: 0 2rem;
+  border-bottom: 1px solid black;
+  display: flex;
+}
+
+
+.nav {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+}
+
+.nav li {
+  border: 1px solid black;
+  padding: 5px 10px
+}
+
+.navblock {
+  border-right: 1px solid gainsboro;
+  padding: 1% 2%;
+}
+
+.navblock:last-child {
+  border-right: none;
+}
