@@ -1,0 +1,25 @@
+# dependencies
+node_modules/
+coverage/
+
+# misc
+.DS_Store
+.idea
+.vs
+.env.local
+
+lerna-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+**/build/*
+**/node_modules/*
+**/.next/*
+.env.production
+.env.old.local
+
+# ignore the vars and build folder in packages/main
+packages/main/.env.production 
+packages/main/.next/
+create-env.sh 
+packages/main/newrelic_agent.log
