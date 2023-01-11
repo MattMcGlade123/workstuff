@@ -16,7 +16,7 @@ export interface HeaderState {
 
 export interface BasketItem {
   name: string,
-  price: number,
+  price: string,
   quantity: number
 }
 
@@ -29,4 +29,11 @@ export interface PostInterface {
   id: number,
   title: string,
   body: string
+}
+
+export interface ProductItem {
+  name: string,
+  description: string,
+  price: string,
+  images: string[]
 }
