@@ -1,0 +1,101 @@
+{
+  "env": {
+    "browser": true,
+    "jest": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "plugins": ["react-hooks", "jest", "import", "simple-import-sort"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2019,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
+  "ignorePatterns": ["**/build/*.js"],
+  "rules": {
+    "react/display-name": "off",
+    "no-empty-function": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "react/require-default-props": "off",
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"],
+    "@typescript-eslint/ban-ts-comment": "off",
+    "no-use-before-define": "off",
+    "camelcase": "off",
+    "import/extensions": [
+      // rule added because we mix .js and .ts
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    "react/prop-types": "off",
+    "semi-style": ["error", "last"],
+    "no-console": "error",
+    "react-hooks/exhaustive-deps": "off",
+    "react/no-array-index-key": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-boolean-value": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "import/prefer-default-export": "off",
+    "template-curly-spacing": "off",
+    "object-curly-newline": [
+      "error",
+      {
+        "consistent": true
+      }
+    ],
+    "indent": [
+      "error",
+      2,
+      {
+        "ignoredNodes": ["TemplateLiteral", "SwitchCase"]
+      }
+    ],
+    "comma-dangle": ["error", "only-multiline"],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    ],
+    "simple-import-sort/imports": [
+      "error",
+      {
+        "groups": [
+          // Packages - React related packages come first.
+          ["^react", "^@?\\w"],
+          // Internal packages.
+          ["^(components|utils|queries|types)(/.*|$)"],
+          // Relative imports, anything that starts with a dot.
+          ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"]
+        ]
+      }
+    ],
+    "@next/next/no-html-link-for-pages": ["off"],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "ignoreRestSiblings": true
+      }
+    ]
+  }
+}
