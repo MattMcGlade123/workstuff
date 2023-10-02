@@ -2,6 +2,8 @@
 import type { AnySelector, Selectors } from './selectors';
 
 export type Conditions = {
+	/** `[data-theme=kg] &` */"_kg": string
+	/** `[data-theme=sah] &` */"_sah": string
 	/** `&:is(:hover, [data-hover])` */"_hover": string
 	/** `&:is(:focus, [data-focus])` */"_focus": string
 	/** `&:focus-within` */"_focusWithin": string

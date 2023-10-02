@@ -1,34 +1,16 @@
 'use client'
-import styled from 'styled-components';
+import { styledButton, styledContainer } from './TestStyles'
 
-const Button = styled.button`
-  text-transform: uppercase;
-  font-size: 14px;
-  line-height: 20px;
-  color: purple;
-  background: orange;
-  border: 1px solid white;
-  width: 100%;
-  transition: all 0.3s;
-  cursor: pointer;
-  text-transform: uppercase;
-  height: 3.8rem;
-  &:hover {
-    background: darkorange;
-    color: white;
-    border-color: black;
-  }
-`;
 
-const StyledWrapper = styled.div`
-  background: white;
-  font-size: 1rem;
-`;
-
-const TestStructure = ({ data }) => (
-  <StyledWrapper>
-    <p>TEST2</p>
-    <p>{data?.description}</p>
-  </StyledWrapper>
-)
+const TestStructure = ({ data, clientProps: { isOn, handleClick } }) => {
+  return (
+    <div>
+      <p>{data?.title}</p>
+      <button className={styledButton({ visual: 'solid', size: 'lg' })} onClick={() => handleClick()}>Testing</button>
+      <div className={styledContainer({ visual: isOn ? 'on' : 'off' })}>
+        <p>{data?.description}</p>
+      </div>
+    </div>
+  )
+}
 export default TestStructure

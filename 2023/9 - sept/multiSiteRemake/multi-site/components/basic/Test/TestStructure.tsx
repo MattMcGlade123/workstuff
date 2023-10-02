@@ -1,13 +1,14 @@
 'use client'
 
+import { styledButton, styledContainer } from './TestStyles'
 
 const TestStructure = ({ handleClick, isOn, finalData }) => (
   <div>
-    <button type="button" onClick={() => handleClick()}>Click ME</button>
+    <button className={styledButton({ visual: 'outline', size: 'lg' })} type="button" onClick={() => handleClick()}>Click ME</button>
     <p>TEST</p>
-    {isOn && (<>
+    <div className={styledContainer({ visual: isOn ? 'on' : 'off'})}>
       <p>{finalData?.description}</p>
-    </>)}
+    </div>
   </div>
 )
 export default TestStructure

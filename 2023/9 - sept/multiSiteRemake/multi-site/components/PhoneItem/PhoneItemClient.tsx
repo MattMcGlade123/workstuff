@@ -1,12 +1,9 @@
 'use client'
 
-import { getData } from '../../../api'
-import React, { Children, ReactElement, cloneElement, useEffect, useState } from 'react';
-import TestStructure from './TestStructure';
+import React, { Children, ReactElement, cloneElement, useState } from 'react';
 
 const TestClient = ({ children }) => {
   const [isOn, setOn] = useState(false);
-
 
   const handleClick = () => {
     setOn(!isOn)
