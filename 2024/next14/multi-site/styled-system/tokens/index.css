@@ -1,0 +1,33 @@
+@layer tokens {
+    :where(:root, :host) {
+  --colors-primary: #0FEE0F;
+  --colors-secondary: #EE0F0F;
+  --colors-grey-100: #aaa;
+  --colors-grey-200: #eee;
+  --colors-red-100: #E54515;
+  --colors-red-200: #F20A38;
+  --colors-blue-100: #078EF8;
+  --colors-purple-100: #A53DF5;
+  --colors-purple-200: #4F1D75;
+  --fonts-body: system-ui, sans-serif;
+  --breakpoints-sm: 640px;
+  --breakpoints-md: 768px;
+  --breakpoints-lg: 1024px;
+  --breakpoints-xl: 1280px;
+  --breakpoints-2xl: 1536px;
+  --sizes-breakpoint-sm: 640px;
+  --sizes-breakpoint-md: 768px;
+  --sizes-breakpoint-lg: 1024px;
+  --sizes-breakpoint-xl: 1280px;
+  --sizes-breakpoint-2xl: 1536px
+}
+
+[data-theme=kg] {
+  --colors-text: var(--colors-red-200)
+}
+
+[data-theme=sah] {
+  --colors-text: #333
+}
+  }
+  
