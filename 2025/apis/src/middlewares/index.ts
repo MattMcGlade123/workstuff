@@ -1,6 +1,6 @@
 import express from 'express'
 import { get, merge } from 'lodash';
-import { getUsersBySessionToken } from '../db/users';
+import { getUsers, getUsersBySessionToken } from '../db/users';
 
 export const isOwner = async (
   req: express.Request,
@@ -35,16 +35,20 @@ export const isAuthenticated = async (
   next: express.NextFunction
 ) => {
   try {
-    const sessionToken = req.cookies['auth-token']
+    const sessionToken = req.cookies['auth-token'];
+
+    console.log('sessionToken', sessionToken)
 
     if (!sessionToken) {
-      res.sendStatus(403)
+      return res.sendStatus(403)
     }
 
-    const existingUser = getUsersBySessionToken(sessionToken);
+    const existingUser = await getUsersBySessionToken(sessionToken);
+
+    console.log('existingUser', existingUser)
 
     if (!existingUser) {
-      res.sendStatus(403)
+      return res.sendStatus(403)
     }
 
     merge(req, { identity: existingUser })
