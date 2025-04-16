@@ -1,5 +1,5 @@
 import { ProductType } from '../../types';
-import { getAllPageData, getProductBySlug } from '../dbs';
+import { addProduct, getAllPageData, getProductBySlug } from '../dbs';
 import express from 'express';
 
 export const getAllProductsData = async (req: express.Request,
@@ -11,7 +11,12 @@ export const getAllProductsData = async (req: express.Request,
       return res.sendStatus(400)
     }
 
-    return res.status(200).json(productListData)
+    const finalData = {
+      pageName: productListData[0].pageName,
+      products: productListData[0].products
+    }
+
+    return res.status(200).json(finalData)
 
 
   } catch (error) {
@@ -23,8 +28,6 @@ export const getProduct = async (req: express.Request,
   res: express.Response) => {
   const { slug } = req.params;
 
-  console.log('slug', slug)
-
   try {
     const productData = await getProductBySlug(slug)
 
@@ -33,6 +36,37 @@ export const getProduct = async (req: express.Request,
     }
 
     return res.status(200).json(productData)
+
+  } catch (error) {
+    return res.sendStatus(400)
+  }
+}
+
+export const addProductData = async (req: express.Request,
+  res: express.Response) => {
+  try {
+    const { slug, name, price, image } = req.body;
+
+    const priceAsNumber = Number(price);
+
+    if (isNaN(priceAsNumber) || priceAsNumber <= 0) {
+      return res.status(400).json({ error: 'Price must be a valid number' });
+    }
+
+    if (!slug || !name || !price || !image || !image.url) {
+      return res.status(400).json({ error: 'Missing required product fields' });
+    }
+
+    const productData = await addProduct({
+      slug,
+      name,
+      price: priceAsNumber,
+      image
+    })
+
+    return (
+      res.status(200).json(productData).end()
+    );
 
   } catch (error) {
     return res.sendStatus(400)
