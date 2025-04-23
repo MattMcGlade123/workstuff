@@ -1,31 +1,26 @@
 'use client';
-import { ProductType } from '@/custom-type';
-import { StyleContainer, StyleList } from './HomeStyles';
+import { AllProductData } from '@/custom-type';
+import { StyleContainer } from './HomeStyles';
 import { FC } from 'react';
+import ProductList from '@/components/ProductList';
 
-interface ProductListStructureProps {
-  pageTitle: string,
-  products: ProductType[]
-}
+const ProductListStructure: FC<AllProductData> = ({
+  pageName,
+  products,
+  error
+}) => (
+  <StyleContainer>
+    {error && (
+      <>
+        <h2>There has been an error fetching data</h2>
+        <div>{JSON.stringify(error)}</div>
+      </>
+    )}
 
-const ProductListStructure: FC<ProductListStructureProps> = ({
-  pageTitle,
-  products
-}) => {
-  return (
-    <StyleContainer>
-      <h1>{pageTitle}</h1>
-      <StyleList>
-        {products && products.map((thisProduct) => (
-          <div key={thisProduct._id}>
-            <p>{thisProduct?.name}</p>
-            <p>£{thisProduct?.price}</p>
-            <img src={thisProduct?.image?.url} alt={thisProduct?.image?.alt} />
-          </div>
-        ))}
-      </StyleList>
-    </StyleContainer>
-  );
-}
+    {!error && (
+      <ProductList pageName={pageName} products={products} />
+    )}
+  </StyleContainer>
+);
 
 export default ProductListStructure;

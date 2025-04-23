@@ -8,3 +8,23 @@ export interface ProductType {
     alt: string,
   }
 }
+
+export interface AllProductData {
+  pageName: string,
+  products: ProductType[],
+  error: any
+}
+
+export interface ListPageData {
+  pageName: string,
+  products: ProductType[],
+}
+
+export interface AllSingleProductData {
+  thisProduct: ProductType
+  error: any
+}
+
+export interface SingleProductDataInt {
+  thisProduct: ProductType
+}

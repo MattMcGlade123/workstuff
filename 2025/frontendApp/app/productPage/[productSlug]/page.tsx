@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
-import RecipePageLogic from './RecipePageLogic';
+import ProductPageLogic from './ProductPageLogic';
+import { fetchData } from '@/utils/fetchData';
+import { ProductType } from '@/custom-type';
 
 export function generateMetadata(): Metadata {
   return {
@@ -10,7 +12,16 @@ export function generateMetadata(): Metadata {
 export default async function Page(props: any) {
   const { productSlug } = await props?.params;
 
-  const productData =  fetchData('http://localhost:8080/') 
+  const { finalData, error } = await fetchData<{ products: ProductType[], error: any }>(`http://localhost:8080/products/${productSlug}`)
 
-  return <RecipePageLogic recipeId={idAsNumber} />;
+  console.log('finalData', finalData)
+
+  // return <div>TEST</div>
+
+  const componentProps = {
+    thisProduct: finalData?.products[0],
+    error
+  }
+
+  return <ProductPageLogic {...componentProps} />;
 }

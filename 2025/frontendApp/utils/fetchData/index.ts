@@ -1,4 +1,9 @@
-export const fetchData = async (url: string) => {
+interface QueryResult<T> {
+  finalData: T | null;
+  error: any;
+}
+
+export const fetchData = async <T = { [key: string]: any }>(url: string): Promise<QueryResult<T>> => {
   let finalData;
   let error;
 
@@ -6,7 +11,6 @@ export const fetchData = async (url: string) => {
     const response = await fetch(url);
     const dataResponse = await response.json();
 
-    console.log('dataResponse', dataResponse);
     finalData = dataResponse
   } catch (err) {
     error = err

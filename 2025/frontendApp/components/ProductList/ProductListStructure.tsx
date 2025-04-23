@@ -1,34 +1,29 @@
-import { Recipe } from '@/custom-type';
+
 import React, { FC } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import Like from '../Like';
 
 import {
   StyledWrapper,
   StyledTitle
-} from './RecipeListStyles';
+} from './ProductListStyles';
+import { ListPageData } from '@/custom-type';
 
-interface RecipeListStructureProps {
-  currentList: Recipe[] | null;
-  showNoResults: boolean;
-}
 
-const RecipeListStructure: FC<RecipeListStructureProps> = ({ currentList, showNoResults }) => {
+const ProductListStructure: FC<ListPageData> = ({ pageName, products }) => {
   return (
-    <StyledWrapper data-testid="recipeList">
-      {currentList && currentList?.map((thisListItem) => (
-        <div key={thisListItem.id}>
-          <StyledTitle>{thisListItem.name} <Like thisId={thisListItem.id} /></StyledTitle>
-
-          <Link href={`recipe-page/${thisListItem.id}`} key={thisListItem.id}>
-            <Image src={thisListItem.image} alt={thisListItem.name} width={200} height={200} />
+    <div data-testid="recipeList">
+      <StyledTitle>{pageName}</StyledTitle>
+      <StyledWrapper>
+        {products && products.map((thisProduct) => (
+          <Link href={`/productPage/${thisProduct.slug}`} key={thisProduct._id}>
+            <p>{thisProduct?.name}</p>
+            <p>£{thisProduct?.price}</p>
+            <img src={thisProduct?.image?.url} alt={thisProduct?.image?.alt} />
           </Link>
-        </div>
-      ))}
-      {showNoResults && <p>Sorry there were no results for that search</p>}
-    </StyledWrapper>
+        ))}
+      </StyledWrapper>
+    </div>
   );
 };
 
-export default RecipeListStructure;
+export default ProductListStructure;
