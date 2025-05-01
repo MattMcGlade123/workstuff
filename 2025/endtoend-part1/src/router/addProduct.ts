@@ -1,4 +1,4 @@
-import { addProductData } from '../controller/products';
+import { addProductData } from '../controllers/products';
 import express from 'express';
 
 export const addProductRoute = (router: express.Router) => {

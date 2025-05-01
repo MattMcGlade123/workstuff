@@ -1,5 +1,4 @@
-import { ProductType } from '../../types';
-import { addProduct, getAllPageData, getProductBySlug } from '../dbs';
+import { addProduct, getAllPageData, getProductBySlug } from '../dbs/products';
 import express from 'express';
 
 export const getAllProductsData = async (req: express.Request,

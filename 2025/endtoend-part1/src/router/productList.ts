@@ -1,4 +1,4 @@
-import { getAllProductsData } from '../controller/products';
+import { getAllProductsData } from '../controllers/products';
 import express from 'express';
 
 export const productListRoute = (router: express.Router) => {

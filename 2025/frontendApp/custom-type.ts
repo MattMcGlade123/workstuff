@@ -1,5 +1,4 @@
-export interface ProductType {
-  _id: string,
+export interface ProductTypeBasic {
   slug: string,
   name: string,
   price: number,
@@ -7,6 +6,10 @@ export interface ProductType {
     url: string,
     alt: string,
   }
+}
+
+export interface ProductType extends ProductTypeBasic {
+  _id: string,
 }
 
 export interface AllProductData {
@@ -21,7 +24,7 @@ export interface ListPageData {
 }
 
 export interface AllSingleProductData {
-  thisProduct: ProductType
+  thisProduct: ProductType | undefined
   error: any
 }
 

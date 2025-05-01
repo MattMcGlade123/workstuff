@@ -1,4 +1,4 @@
-import { getProduct } from '../controller/products';
+import { getProduct } from '../controllers/products';
 import express from 'express';
 
 export const productRoute = (router: express.Router) => {
