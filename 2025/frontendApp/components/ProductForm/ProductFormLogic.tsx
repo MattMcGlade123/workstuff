@@ -3,10 +3,13 @@
 import React, { FC, FormEvent, useCallback, useState } from 'react';
 
 import ProductFormStructure from './ProductFormStructure';
-import { ProductTypeBasic } from '@/custom-type';
+import { AddResponse, FormFields, ProductTypeBasic } from '@/custom-type';
+import { fetchData } from '@/utils/fetchData';
+import { validateData } from '@/utils/validateData';
 
 
 const ProductFormLogic: FC = () => {
+  const [errorMessage, setErrorMessage] = useState('');
   const [formValues, setFormValues] = useState<ProductTypeBasic>({
     slug: '',
     name: '',
@@ -77,15 +80,43 @@ const ProductFormLogic: FC = () => {
     }
   }, [])
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formDataObject = new FormData(e.currentTarget);
+    const completeData = Object.fromEntries(formDataObject.entries()) as unknown as FormFields;
+    const dataToValidate = {
+      slug: completeData.slug,
+      name: completeData.name,
+      price: Number(completeData.price),
+      image: {
+        url: completeData['image-url'],
+        alt: completeData['image-alt']
+      }
+    }
+    console.log('completeData', completeData)
+    const hasAllData = validateData(dataToValidate)
+    console.log('hasAllData', hasAllData)
 
-    
+    if (hasAllData) {
+      const { finalData, error } = await fetchData<{ data: AddResponse, error: any }>('http://localhost:8080/add', {
+        method: 'POST',
+        body: JSON.stringify(dataToValidate),
+      })
+    }
+    else {
+      setErrorMessage('Missing required data')
+
+      setTimeout(() => {
+        setErrorMessage('')
+      }, 5000)
+    }
+
   }
 
   const componentProps = {
     handleSubmit,
-    handleType
+    handleType,
+    errorMessage
   }
 
   return <ProductFormStructure {...componentProps

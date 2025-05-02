@@ -8,11 +8,13 @@ import {
 interface ProductFormStructureProps {
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   handleType: (e: ChangeEvent<HTMLInputElement>) => void;
+  errorMessage: string;
 }
 
-const ProductFormStructure: FC<ProductFormStructureProps> = ({ handleSubmit, handleType }) => {
+const ProductFormStructure: FC<ProductFormStructureProps> = ({ handleSubmit, handleType, errorMessage }) => {
   return (
     <StyledWrapper>
+      {errorMessage.length > 0 && <p>{errorMessage}</p>}
       <form onSubmit={(e) => handleSubmit(e)}>
         <fieldset>
           <label>Enter Slug</label>

@@ -44,9 +44,13 @@ export const getProduct = async (req: express.Request,
 export const addProductData = async (req: express.Request,
   res: express.Response) => {
   try {
+    console.log('req.body', req.body)
     const { slug, name, price, image } = req.body;
 
     const priceAsNumber = Number(price);
+
+    console.log('price', price)
+    console.log('priceAsNumber', priceAsNumber)
 
     if (isNaN(priceAsNumber) || priceAsNumber <= 0) {
       return res.status(400).json({ error: 'Price must be a valid number' });
@@ -56,7 +60,7 @@ export const addProductData = async (req: express.Request,
       return res.status(400).json({ error: 'Missing required product fields' });
     }
 
-    const productData = await addProduct({
+    const addResponse = await addProduct({
       slug,
       name,
       price: priceAsNumber,
@@ -64,7 +68,7 @@ export const addProductData = async (req: express.Request,
     })
 
     return (
-      res.status(200).json(productData).end()
+      res.status(200).json(addResponse).end()
     );
 
   } catch (error) {
