@@ -3,15 +3,15 @@ import React, { ChangeEvent, FC, FormEvent } from 'react';
 
 import {
   StyledWrapper
-} from './ProductFormStyles';
+} from './LoginFormStyles';
 
-interface ProductFormStructureProps {
+interface LoginFormStructureProps {
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   handleType: (e: ChangeEvent<HTMLInputElement>) => void;
   fetchMessage: string;
 }
 
-const ProductFormStructure: FC<ProductFormStructureProps> = ({ handleSubmit, handleType, fetchMessage }) => {
+const LoginFormStructure: FC<LoginFormStructureProps> = ({ handleSubmit, handleType, fetchMessage }) => {
   return (
     <StyledWrapper>
       {fetchMessage?.length > 0 && <p>{fetchMessage}</p>}
@@ -42,4 +42,4 @@ const ProductFormStructure: FC<ProductFormStructureProps> = ({ handleSubmit, han
   );
 };
 
-export default ProductFormStructure;
+export default LoginFormStructure;

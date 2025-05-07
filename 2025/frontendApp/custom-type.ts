@@ -34,7 +34,10 @@ export interface SingleProductDataInt {
 
 export interface OptionsInt {
   method: string,
-  body: string
+  body: string,
+  headers: {
+    'Content-Type': string;
+  }
 }
 
 export interface AddResponse {
@@ -46,9 +49,14 @@ export interface AddResponse {
 }
 
 export interface FormFields {
-  "image-alt": string;
-  "image-url": string;
+  'image-alt': string;
+  'image-url': string;
   name: string;
   price: string;
   slug: string;
+}
+
+export interface LoginFormInt {
+  username: string;
+  password: string;
 }

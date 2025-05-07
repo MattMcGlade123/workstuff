@@ -23,3 +23,4 @@ packages/main/.env.production
 packages/main/.next/
 create-env.sh 
 packages/main/newrelic_agent.log
+2025/endtoend-part1/.env

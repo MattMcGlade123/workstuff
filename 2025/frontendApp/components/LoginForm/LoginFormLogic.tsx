@@ -2,22 +2,17 @@
 
 import React, { FC, FormEvent, useCallback, useState } from 'react';
 
-import ProductFormStructure from './ProductFormStructure';
-import { AddResponse, FormFields, ProductTypeBasic } from '@/custom-type';
+import LoginFormStructure from './LoginFormStructure';
+import { AddResponse, FormFields, LoginFormInt } from '@/custom-type';
 import { fetchData } from '@/utils/fetchData';
 import { validateData } from '@/utils/validateData';
 
 
-const ProductFormLogic: FC = () => {
+const LoginFormLogic: FC = () => {
   const [fetchMessage, setFetchMessage] = useState('');
-  const [formValues, setFormValues] = useState<ProductTypeBasic>({
-    slug: '',
-    name: '',
-    price: 0,
-    image: {
-      url: '',
-      alt: ''
-    }
+  const [formValues, setFormValues] = useState<LoginFormInt>({
+    username: '',
+    password: '',
   });
 
   const handleType = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,18 +20,18 @@ const ProductFormLogic: FC = () => {
     const value = event.target.value;
 
     switch (name) {
-      case 'slug':
+      case 'username':
         setFormValues({
           ...formValues,
-          slug: value
+          username: value
         })
 
         break;
 
-      case 'name':
+      case 'password':
         setFormValues({
           ...formValues,
-          name: value
+          password: value
         })
 
         break;
@@ -45,28 +40,6 @@ const ProductFormLogic: FC = () => {
         setFormValues({
           ...formValues,
           price: Number(value)
-        })
-
-        break;
-
-      case 'image-url':
-        setFormValues({
-          ...formValues,
-          image: {
-            ...formValues.image,
-            url: value
-          }
-        })
-
-        break;
-
-      case 'image-alt':
-        setFormValues({
-          ...formValues,
-          image: {
-            ...formValues.image,
-            alt: value
-          }
         })
 
         break;
@@ -98,7 +71,7 @@ const ProductFormLogic: FC = () => {
     console.log('hasAllData', hasAllData)
 
     if (hasAllData) {
-      const { finalData, error } = await fetchData<{ data: AddResponse , error: any }>('http://localhost:8080/add', {
+      const { finalData, error } = await fetchData<{ data: AddResponse, error: any }>('http://localhost:8080/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -132,8 +105,8 @@ const ProductFormLogic: FC = () => {
     fetchMessage
   }
 
-  return <ProductFormStructure {...componentProps
+  return <LoginFormStructure {...componentProps
   } />;
 };
 
-export default ProductFormLogic;
+export default LoginFormLogic;

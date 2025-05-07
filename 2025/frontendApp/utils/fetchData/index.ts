@@ -18,19 +18,22 @@ export const fetchData = async <T = { [key: string]: any }>(url: string, options
 
   const finalOptions = options ? {
     ...options,
-    headers: {
-      'Content-Type': 'application/json'
-    },
   } : defaultOptions;
 
   try {
     const response = await fetch(url, finalOptions);
-    const dataResponse = await response.json();
 
-    finalData = dataResponse
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData?.error || 'Unknown error');
+    }
+
+    const dataResponse = await response.json();
+    finalData = dataResponse;
   } catch (err) {
-    error = err
+    error = err;
   }
+
 
   return {
     finalData,
