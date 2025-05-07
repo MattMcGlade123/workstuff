@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import RegisterLogic from './RegisterLogic';
+import LoginLogic from './LoginLogic';
 
 export function generateMetadata(): Metadata {
   return {
@@ -9,5 +9,5 @@ export function generateMetadata(): Metadata {
 
 export default async function Page() {
 
-  return <RegisterLogic />;
+  return <LoginLogic />;
 }

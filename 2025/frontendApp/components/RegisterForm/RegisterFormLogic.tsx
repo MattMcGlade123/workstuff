@@ -6,9 +6,12 @@ import RegisterFormStructure from './RegisterFormStructure';
 import { RegisterFormInt, RegisterResponse } from '@/custom-type';
 import { fetchData } from '@/utils/fetchData';
 import { validateData } from '@/utils/validateData';
+import { updateIsAuth } from '@/features/auth';
+import { useDispatch } from 'react-redux';
 
 
 const RegisterFormLogic: FC = () => {
+  const dispatch = useDispatch();
   const [fetchMessage, setFetchMessage] = useState('');
   const [formValues, setFormValues] = useState<RegisterFormInt>({
     email: '',
@@ -83,9 +86,10 @@ const RegisterFormLogic: FC = () => {
       else {
         setFetchMessage('You have been registered')
         if (finalData?.token) {
-          localStorage.setItem('token', finalData?.token)
+          localStorage.setItem('product-api-token', finalData?.token)
         }
         setFetchMessage(`Thank you ${finalData?.username} for registering`)
+        dispatch(updateIsAuth(true));
         e.currentTarget?.reset();
       }
     }

@@ -8,7 +8,7 @@ export const isProductFormData = (data: ProductTypeBasic | LoginFormInt | Regist
 };
 
 export const isRegisterFormData = (data: ProductTypeBasic | LoginFormInt | RegisterFormInt): data is RegisterFormInt => {
-  if ('email' in data) {
+  if ('username' in data) {
     return true;
   }
   return false;

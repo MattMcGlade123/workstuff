@@ -12,6 +12,9 @@ export const login = async (
   try {
     const { email, password } = req.body;
 
+    console.log('email', email);
+    console.log('password', password);
+
     if (!email || !password) {
       return res.sendStatus(400);
     }
@@ -90,7 +93,12 @@ export const checkAuth = (req: express.Request, res: express.Response) => {
 
   try {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    return res.json({ authenticated: true, user: decoded });
+    if (decoded) {
+      return res.json({ authenticated: true });
+    }
+    else {
+      return res.json({ authenticated: false });
+    }
   } catch (err) {
     return res.json({ authenticated: false });
   }

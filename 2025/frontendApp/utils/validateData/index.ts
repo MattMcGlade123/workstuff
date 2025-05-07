@@ -33,7 +33,7 @@ export const validateData = (data: ProductTypeBasic | LoginFormInt): boolean => 
     }
   }
   else {
-    if (data.username === '') {
+    if (data.email === '') {
       hasValidData = false
     }
     if (data.password === '') {

@@ -1,3 +1,6 @@
+// This file contains the TypeScript interfaces for the product data and form fields used in the application.
+
+// Data types
 export interface ProductTypeBasic {
   slug: string,
   name: string,
@@ -37,6 +40,7 @@ export interface OptionsInt {
   body: string,
   headers: {
     'Content-Type': string;
+    Authorization?: string
   }
 }
 export interface FormFields {
@@ -48,7 +52,7 @@ export interface FormFields {
 }
 
 export interface LoginFormInt {
-  username: string;
+  email: string;
   password: string;
 }
 
@@ -66,6 +70,8 @@ export interface AddResponse {
   matchedCount: number
 }
 
+// Response types
+
 export interface RegisterResponse {
   username: string,
   token: string,
@@ -76,4 +82,17 @@ export interface LoginResponse {
   username: string,
   token: string,
   error: any
+}
+
+
+export interface CheckAuthResponse {
+  authenticated: boolean,
+  error: any
+}
+
+
+// State types
+
+export interface AuthState {
+  isAuth: boolean;
 }

@@ -1,12 +1,11 @@
-import { favouritesReducer } from '@/features/favourites';
-import { siteDataReducer } from '@/features/siteData';
+
+import { authReducer } from '@/features/auth';
 import { configureStore } from '@reduxjs/toolkit';
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      favourites: favouritesReducer,
-      siteData: siteDataReducer
+      auth: authReducer,
     },
   });
 };

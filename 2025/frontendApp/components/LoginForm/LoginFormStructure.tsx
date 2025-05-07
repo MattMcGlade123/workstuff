@@ -17,24 +17,12 @@ const LoginFormStructure: FC<LoginFormStructureProps> = ({ handleSubmit, handleT
       {fetchMessage?.length > 0 && <p>{fetchMessage}</p>}
       <form onSubmit={(e) => handleSubmit(e)}>
         <fieldset>
-          <label>Enter Slug</label>
-          <input name='slug' placeholder='/example-slug' onChange={handleType} />
+          <label>Enter Email</label>
+          <input name='email' placeholder='A email' onChange={handleType} />
         </fieldset>
         <fieldset>
-          <label>Enter Product Name</label>
-          <input name='name' placeholder='A hat' onChange={handleType} />
-        </fieldset>
-        <fieldset>
-          <label>Enter Price as number</label>
-          <input name='price' placeholder='100' onChange={handleType} />
-        </fieldset>
-        <fieldset>
-          <label>Enter Image URL</label>
-          <input name='image-url' placeholder='http://www.image.com' onChange={handleType} />
-        </fieldset>
-        <fieldset>
-          <label>Enter Alt</label>
-          <input name='image-alt' placeholder='This is an image of a hat' onChange={handleType} />
+          <label>Enter Password</label>
+          <input name='password' placeholder='A password' onChange={handleType} />
         </fieldset>
         <button type='submit'>Enter details</button>
       </form>

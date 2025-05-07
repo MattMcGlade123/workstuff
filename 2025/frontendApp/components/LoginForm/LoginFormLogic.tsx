@@ -3,15 +3,18 @@
 import React, { FC, FormEvent, useCallback, useState } from 'react';
 
 import LoginFormStructure from './LoginFormStructure';
-import { AddResponse, FormFields, LoginFormInt } from '@/custom-type';
+import { LoginFormInt, LoginResponse } from '@/custom-type';
 import { fetchData } from '@/utils/fetchData';
 import { validateData } from '@/utils/validateData';
+import { useDispatch } from 'react-redux';
+import { updateIsAuth } from '@/features/auth';
 
 
 const LoginFormLogic: FC = () => {
+  const dispatch = useDispatch();
   const [fetchMessage, setFetchMessage] = useState('');
   const [formValues, setFormValues] = useState<LoginFormInt>({
-    username: '',
+    email: '',
     password: '',
   });
 
@@ -20,10 +23,10 @@ const LoginFormLogic: FC = () => {
     const value = event.target.value;
 
     switch (name) {
-      case 'username':
+      case 'email':
         setFormValues({
           ...formValues,
-          username: value
+          email: value
         })
 
         break;
@@ -50,17 +53,17 @@ const LoginFormLogic: FC = () => {
     const formDataObject = new FormData(e.currentTarget);
     const completeData = Object.fromEntries(formDataObject.entries()) as unknown as LoginFormInt;
     const dataToValidate = {
-      username: completeData.username,
+      email: completeData.email,
       password: completeData.password,
     }
 
     const hasAllData = validateData(dataToValidate)
 
     if (hasAllData) {
-      const { finalData, error } = await fetchData<{ data: AddResponse, error: any }>('http://localhost:8080/add', {
+      const { finalData, error } = await fetchData<LoginResponse>('http://localhost:8080/auth/login', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(dataToValidate),
       })
@@ -72,8 +75,11 @@ const LoginFormLogic: FC = () => {
         setFetchMessage(finalData?.error)
       }
       else {
-        setFetchMessage('Product Added')
-        e.currentTarget.reset();
+        setFetchMessage('Logged in successfully')
+        if (finalData?.token) {
+          localStorage.setItem('product-api-token', finalData?.token)
+        }
+        dispatch(updateIsAuth(true));
       }
     }
     else {
