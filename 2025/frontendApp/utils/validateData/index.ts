@@ -1,5 +1,5 @@
 import { LoginFormInt, ProductTypeBasic } from "@/custom-type";
-import { isProductFormData } from "@/type-checkers";
+import { isProductFormData, isRegisterFormData } from "@/type-checkers";
 
 export const validateData = (data: ProductTypeBasic | LoginFormInt): boolean => {
   let hasValidData = true;
@@ -18,6 +18,17 @@ export const validateData = (data: ProductTypeBasic | LoginFormInt): boolean => 
       hasValidData = false
     }
     if (data.image.url === '') {
+      hasValidData = false
+    }
+  }
+  else if (isRegisterFormData(data)) {
+    if (data.email === '') {
+      hasValidData = false
+    }
+    if (data.username === '') {
+      hasValidData = false
+    }
+    if (data.password === '') {
       hasValidData = false
     }
   }

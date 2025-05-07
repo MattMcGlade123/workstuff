@@ -2,15 +2,16 @@
 
 import React, { FC, FormEvent, useCallback, useState } from 'react';
 
-import LoginFormStructure from './LoginFormStructure';
-import { AddResponse, FormFields, LoginFormInt } from '@/custom-type';
+import RegisterFormStructure from './RegisterFormStructure';
+import { RegisterFormInt, RegisterResponse } from '@/custom-type';
 import { fetchData } from '@/utils/fetchData';
 import { validateData } from '@/utils/validateData';
 
 
-const LoginFormLogic: FC = () => {
+const RegisterFormLogic: FC = () => {
   const [fetchMessage, setFetchMessage] = useState('');
-  const [formValues, setFormValues] = useState<LoginFormInt>({
+  const [formValues, setFormValues] = useState<RegisterFormInt>({
+    email: '',
     username: '',
     password: '',
   });
@@ -20,6 +21,13 @@ const LoginFormLogic: FC = () => {
     const value = event.target.value;
 
     switch (name) {
+      case 'email':
+        setFormValues({
+          ...formValues,
+          email: value
+        })
+
+        break;
       case 'username':
         setFormValues({
           ...formValues,
@@ -48,8 +56,9 @@ const LoginFormLogic: FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formDataObject = new FormData(e.currentTarget);
-    const completeData = Object.fromEntries(formDataObject.entries()) as unknown as LoginFormInt;
+    const completeData = Object.fromEntries(formDataObject.entries()) as unknown as RegisterFormInt;
     const dataToValidate = {
+      email: completeData.email,
       username: completeData.username,
       password: completeData.password,
     }
@@ -57,7 +66,7 @@ const LoginFormLogic: FC = () => {
     const hasAllData = validateData(dataToValidate)
 
     if (hasAllData) {
-      const { finalData, error } = await fetchData<{ data: AddResponse, error: any }>('http://localhost:8080/add', {
+      const { finalData, error } = await fetchData<RegisterResponse>('http://localhost:8080/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -72,8 +81,12 @@ const LoginFormLogic: FC = () => {
         setFetchMessage(finalData?.error)
       }
       else {
-        setFetchMessage('Product Added')
-        e.currentTarget.reset();
+        setFetchMessage('You have been registered')
+        if (finalData?.token) {
+          localStorage.setItem('token', finalData?.token)
+        }
+        setFetchMessage(`Thank you ${finalData?.username} for registering`)
+        e.currentTarget?.reset();
       }
     }
     else {
@@ -91,8 +104,8 @@ const LoginFormLogic: FC = () => {
     fetchMessage
   }
 
-  return <LoginFormStructure {...componentProps
+  return <RegisterFormStructure {...componentProps
   } />;
 };
 
-export default LoginFormLogic;
+export default RegisterFormLogic;

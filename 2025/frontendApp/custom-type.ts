@@ -39,15 +39,6 @@ export interface OptionsInt {
     'Content-Type': string;
   }
 }
-
-export interface AddResponse {
-  acknowledged: boolean,
-  modifiedCount: number,
-  upsertedId: string,
-  upsertedCount: number,
-  matchedCount: number
-}
-
 export interface FormFields {
   'image-alt': string;
   'image-url': string;
@@ -59,4 +50,30 @@ export interface FormFields {
 export interface LoginFormInt {
   username: string;
   password: string;
+}
+
+export interface RegisterFormInt {
+  email: string;
+  username: string;
+  password: string;
+}
+
+export interface AddResponse {
+  acknowledged: boolean,
+  modifiedCount: number,
+  upsertedId: string,
+  upsertedCount: number,
+  matchedCount: number
+}
+
+export interface RegisterResponse {
+  username: string,
+  token: string,
+  error: any
+}
+
+export interface LoginResponse {
+  username: string,
+  token: string,
+  error: any
 }

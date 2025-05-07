@@ -1,6 +1,9 @@
 import express from 'express';
+import jwt from 'jsonwebtoken';
+
 import { createUser, getUserByEmail } from '../dbs/users';
 import { authentication, random } from '../helpers';
+require("dotenv").config();
 
 export const login = async (
   req: express.Request,
@@ -14,31 +17,27 @@ export const login = async (
     }
 
     const user = await getUserByEmail(email).select('+authentication.salt +authentication.password');
-
     if (!user) {
       return res.sendStatus(400);
     }
 
-    const expectedHash = authentication(user.authentication.salt, password)
-
+    const expectedHash = authentication(user.authentication.salt, password);
     if (user.authentication.password !== expectedHash) {
       return res.sendStatus(403);
     }
 
-    const salt = random();
-    user.authentication.sessionToken = authentication(salt, user._id.toString())
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: '1d' }
+    );
 
-    await user.save();
-
-    res.cookie('auth-token', user.authentication.sessionToken, { domain: 'localhost', path: '/' });
-
-    res.status(200).json(user).end();
-  }
-  catch (error) {
+    return res.status(200).json({ token }).end();
+  } catch (error) {
     console.error(error);
     return res.sendStatus(400);
   }
-}
+};
 
 export const register = async (
   req: express.Request,
@@ -67,9 +66,32 @@ export const register = async (
       },
     });
 
-    return res.status(200).json(newUser).end();
+    const token = jwt.sign(
+      { id: newUser._id, email: newUser.email },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: '1d' }
+    );
+
+    return res.status(200).json({ username: newUser.username, token }).end();
   } catch (error) {
     console.error(error);
     return res.sendStatus(400);
+  }
+};
+
+export const checkAuth = (req: express.Request, res: express.Response) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.json({ authenticated: false });
+  }
+
+  const token = authHeader.split(' ')[1];
+
+  try {
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    return res.json({ authenticated: true, user: decoded });
+  } catch (err) {
+    return res.json({ authenticated: false });
   }
 };

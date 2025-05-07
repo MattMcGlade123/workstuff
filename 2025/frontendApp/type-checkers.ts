@@ -1,7 +1,14 @@
-import { ProductTypeBasic, LoginFormInt } from "./custom-type";
+import { ProductTypeBasic, LoginFormInt, RegisterFormInt } from "./custom-type";
 
-export const isProductFormData = (data: ProductTypeBasic | LoginFormInt): data is ProductTypeBasic => {
+export const isProductFormData = (data: ProductTypeBasic | LoginFormInt | RegisterFormInt): data is ProductTypeBasic => {
   if ('price' in data) {
+    return true;
+  }
+  return false;
+};
+
+export const isRegisterFormData = (data: ProductTypeBasic | LoginFormInt | RegisterFormInt): data is RegisterFormInt => {
+  if ('email' in data) {
     return true;
   }
   return false;
