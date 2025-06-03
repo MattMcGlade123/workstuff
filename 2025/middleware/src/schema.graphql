@@ -1,0 +1,94 @@
+"A particular intergalactic location available for booking"
+type Listing {
+  id: ID!
+  "The name of the listing"
+  title: String!
+  "The listing's description"
+  description: String!
+  "The number of beds"
+  numOfBeds: Int
+  "The cost per night"
+  costPerNight: Float
+  "Indicates if the listing is closed for bookings (on heiatus)"
+  closedForBookings: Boolean
+  "The amenities available for this listing"
+  amenities: [Amenity!]!
+}
+
+type ImageType {
+  "The url of the image"
+  url: String!,
+  "The alt tag for the image"
+  alt: String!,
+}
+
+"An individual product item"
+type Product {
+  "A unque Id"
+  _id: String!,
+  "The path of the image for the product page"
+  slug: String!,
+  "The name of the product"
+  name: String!,
+  "The price of the product"
+  price: Int!,
+ "The price of the product but formated"
+  formattedPrice: String!
+  "The image of the product"
+  image: ImageType!
+}
+
+type ProductListType {
+  "The page name for the product list"
+  pageName: String!,
+  "An array of all the products"
+  products: [Product!]!
+}
+
+type Query {
+  "A curated array of listings to feature on the homepage"
+  featuredListings: [Listing!]!
+  "Returns the details about this listing"
+  listing(id: ID!): Listing
+  "Returns list of products"
+  productList: ProductListType
+}
+
+type Amenity {
+  id: ID!
+  "The amenity category the amenity belongs to"
+  category: String!
+  "The amenity's name"
+  name: String!
+}
+
+type Mutation {
+  "Creates a new listing"
+  createListing(input: CreateListingInput!): CreateListingResponse!
+}
+
+type CreateListingResponse {
+  "Similar to HTTP status code, represents the status of the mutation"
+  code: Int!
+  "Indicates whether the mutation was successful"
+  success: Boolean!
+  "Human-readable message for the UI"
+  message: String!
+  "The newly created listing"
+  listing: Listing
+}
+
+input CreateListingInput {
+  "The listing's title"
+  title: String!
+  "The listing's description"
+  description: String!
+  "The number of beds available"
+  numOfBeds: Int!
+  "The cost per night"
+  costPerNight: Float!
+  "Indicates whether listing is closed for bookings (on hiatus)"
+  closedForBookings: Boolean
+   "The Listing's amenities"
+  amenities: [ID!]!
+}

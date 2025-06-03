@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import ProductListStructure from './ProductListStructure';
-import { fetchData } from '@/utils/fetchData';
-import { AllProductData } from '@/custom-type';
+import { query } from '@/lib/ApolloClient';
+import { PRODUCT_LIST } from '@/graphQl/queries';
 
 export const metadata: Metadata = {
   title: 'A lovely product site',
@@ -9,12 +9,12 @@ export const metadata: Metadata = {
 }
 
 export default async function ProductList() {
-  const { finalData, error } = await fetchData<AllProductData>('http://localhost:8080/products');
-  console.log('finalData', finalData)
+  const { data, error } = await query({ query: PRODUCT_LIST });
+  console.log('data', data)
 
   const componentProps = {
-    pageName: finalData?.pageName || 'Page title',
-    products: finalData?.products || [],
+    pageName: data?.productList?.pageName || 'Page title',
+    products: data?.productList?.products || [],
     error
   }
 
