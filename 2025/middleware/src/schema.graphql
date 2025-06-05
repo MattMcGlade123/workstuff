@@ -52,6 +52,8 @@ type Query {
   listing(id: ID!): Listing
   "Returns list of products"
   productList: ProductListType
+  "Returns details for a single product"
+  aProduct(productSlug: String!): Product
 }
 
 type Amenity {
