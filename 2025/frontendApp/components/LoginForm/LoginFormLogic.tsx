@@ -24,6 +24,12 @@ const LoginFormLogic: FC = () => {
 
   const [signUserIn, { data, error }] = useMutation<{ signIn: SignInResponse, error: any }>(SIGNIN);
 
+  const cleanup = () => {
+    setFetchMessage('')
+    setErrorMessage(undefined)
+    localStorage.removeItem('product-api-token')
+  }
+
   const handleType = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -83,20 +89,21 @@ const LoginFormLogic: FC = () => {
 
   useEffect(() => {
     if (error) {
+      cleanup()
       setErrorMessage(error)
     }
     else if (data) {
       if (data?.error) {
-        setFetchMessage('')
+        cleanup()
         setErrorMessage(data?.error)
       }
       else if (data?.signIn?.code === 403) {
-        console.log('data', data.signIn.message)
-        setFetchMessage('')
+        cleanup()
         setErrorMessage({ message: data.signIn.message } as ApolloError);
       }
       else {
         setFetchMessage('Logged in successfully')
+        setErrorMessage(undefined)
         if (data?.signIn?.token) {
           localStorage.setItem('product-api-token', data?.signIn.token)
         }

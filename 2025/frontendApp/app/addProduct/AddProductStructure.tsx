@@ -6,13 +6,17 @@ import ProductForm from '@/components/ProductForm';
 import Link from 'next/link';
 
 interface AddProductStructureProps {
-  isAuthed: boolean
+  isAuthed: boolean;
+  isLoading?: boolean;
 }
 
-const AddProductStructure: FC<AddProductStructureProps> = ({ isAuthed }) => {
+const AddProductStructure: FC<AddProductStructureProps> = ({ isAuthed, isLoading }) => {
   return (
     <StyleContainer>
-      {!isAuthed && (
+      {isLoading && (
+        <p>Loading...</p>
+      )}
+      {!isAuthed && !isLoading && (
         <div>
           <h1>You are not authenticated to add a product, you need to login first</h1>
           <Link href={'/login'}>
