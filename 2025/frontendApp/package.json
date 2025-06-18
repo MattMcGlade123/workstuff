@@ -6,7 +6,8 @@
     "start": "next start",
     "lint": "next lint",
     "lint:css": "stylelint \"./**/*.{ts,tsx}\"",
-    "test": "jest"
+    "test": "jest",
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",
@@ -31,6 +32,10 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.19.0",
+    "@graphql-codegen/cli": "^5.0.7",
+    "@graphql-codegen/typescript": "^4.1.6",
+    "@graphql-codegen/typescript-operations": "^4.6.1",
+    "@graphql-codegen/typescript-react-apollo": "^4.3.3",
     "@next/eslint-plugin-next": "^15.1.6",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",

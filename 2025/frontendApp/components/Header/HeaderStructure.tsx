@@ -5,7 +5,8 @@ import { faShop } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
-  StyledHeader
+  StyledHeader,
+  StyledNav
 } from './HeaderStyles';
 import Link from 'next/link';
 
@@ -13,6 +14,13 @@ const HeaderStructure: FC = () => {
   return (
     <StyledHeader data-testid="header">
       <Link href={'/'}><h1>Awesome product site<FontAwesomeIcon icon={faShop} /></h1></Link>
+      <StyledNav>
+        <ul>
+          <li><Link href="/login">Login</Link></li>
+          <li><Link href="/register">Register</Link></li>
+          <li><Link href="/addProduct">Add a product</Link></li>
+        </ul>
+      </StyledNav>
     </StyledHeader>
   );
 };

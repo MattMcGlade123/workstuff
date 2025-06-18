@@ -27,6 +27,9 @@ const AddProductLogic: FC = () => {
     else if (finalData?.error) {
       setIsAuthed(false)
     }
+    else if (finalData?.authenticated === false) {
+      setIsAuthed(false)
+    }
     else {
       setIsAuthed(true)
     }

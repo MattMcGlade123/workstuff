@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import ProductPageLogic from './ProductPageLogic';
-import { fetchData } from '@/utils/fetchData';
-import { ProductType } from '@/custom-type';
+import { A_PRODUCT } from '@/graphQl/queries';
+import { query } from '@/lib/ApolloClient';
 
 export function generateMetadata(): Metadata {
   return {
@@ -11,11 +11,11 @@ export function generateMetadata(): Metadata {
 
 export default async function Page(props: any) {
   const { productSlug } = await props?.params;
-
-  const { finalData, error } = await fetchData<{ products: ProductType[], error: any }>(`http://localhost:8080/products/${productSlug}`)
+  const { data, error } = await query({ query: A_PRODUCT, variables: { productSlug } });
+  console.log('data', data)
 
   const componentProps = {
-    thisProduct: finalData?.products[0],
+    thisProduct: data.aProduct,
     error
   }
 

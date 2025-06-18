@@ -4,17 +4,20 @@ import React, { ChangeEvent, FC, FormEvent } from 'react';
 import {
   StyledWrapper
 } from './LoginFormStyles';
+import { ApolloError } from '@apollo/client';
 
 interface LoginFormStructureProps {
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   handleType: (e: ChangeEvent<HTMLInputElement>) => void;
   fetchMessage: string;
+  errorMessage: ApolloError;
 }
 
-const LoginFormStructure: FC<LoginFormStructureProps> = ({ handleSubmit, handleType, fetchMessage }) => {
+const LoginFormStructure: FC<LoginFormStructureProps> = ({ handleSubmit, handleType, fetchMessage, errorMessage }) => {
   return (
     <StyledWrapper>
       {fetchMessage?.length > 0 && <p>{fetchMessage}</p>}
+      {errorMessage && <p>{errorMessage.message}</p>}
       <form onSubmit={(e) => handleSubmit(e)}>
         <fieldset>
           <label>Enter Email</label>
