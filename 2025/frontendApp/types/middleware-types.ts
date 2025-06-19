@@ -83,6 +83,8 @@ export type Mutation = {
   __typename?: 'Mutation';
   /** Creates a new listing */
   createListing: CreateListingResponse;
+  /** Register a new user */
+  register: RegisterResponse;
   /** Signs user in */
   signIn: SignInResponse;
 };
@@ -90,6 +92,11 @@ export type Mutation = {
 
 export type MutationCreateListingArgs = {
   input: CreateListingInput;
+};
+
+
+export type MutationRegisterArgs = {
+  input: RegisterInput;
 };
 
 
@@ -144,6 +151,29 @@ export type QueryListingArgs = {
   id: Scalars['ID']['input'];
 };
 
+export type RegisterInput = {
+  /** The user's email address */
+  email: Scalars['String']['input'];
+  /** The user's password */
+  password: Scalars['String']['input'];
+  /** The users username */
+  username: Scalars['String']['input'];
+};
+
+export type RegisterResponse = {
+  __typename?: 'RegisterResponse';
+  /** Similar to HTTP status code, represents the status of the mutation */
+  code: Scalars['Int']['output'];
+  /** Human-readable message for the UI */
+  message: Scalars['String']['output'];
+  /** Indicates whether the mutation was successful */
+  success: Scalars['Boolean']['output'];
+  /** The token for the user for authentication */
+  token?: Maybe<Scalars['String']['output']>;
+  /** The user's username */
+  username?: Maybe<Scalars['String']['output']>;
+};
+
 export type SignInInput = {
   /** The user's email address */
   email: Scalars['String']['input'];
@@ -180,7 +210,14 @@ export type SignInMutationVariables = Exact<{
 }>;
 
 
-export type SignInMutation = { __typename?: 'Mutation', signIn: { __typename?: 'SignInResponse', token?: string | null } };
+export type SignInMutation = { __typename?: 'Mutation', signIn: { __typename?: 'SignInResponse', code: number, token?: string | null, message: string } };
+
+export type RegisterMutationVariables = Exact<{
+  input: RegisterInput;
+}>;
+
+
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'RegisterResponse', code: number, username?: string | null, token?: string | null } };
 
 
 export const GetProductListDocument = gql`
@@ -282,7 +319,9 @@ export type GetAProductQueryResult = Apollo.QueryResult<GetAProductQuery, GetAPr
 export const SignInDocument = gql`
     mutation SignIn($input: SignInInput!) {
   signIn(input: $input) {
+    code
     token
+    message
   }
 }
     `;
@@ -312,3 +351,38 @@ export function useSignInMutation(baseOptions?: Apollo.MutationHookOptions<SignI
 export type SignInMutationHookResult = ReturnType<typeof useSignInMutation>;
 export type SignInMutationResult = Apollo.MutationResult<SignInMutation>;
 export type SignInMutationOptions = Apollo.BaseMutationOptions<SignInMutation, SignInMutationVariables>;
+export const RegisterDocument = gql`
+    mutation Register($input: RegisterInput!) {
+  register(input: $input) {
+    code
+    username
+    token
+  }
+}
+    `;
+export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
+
+/**
+ * __useRegisterMutation__
+ *
+ * To run a mutation, you first call `useRegisterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerMutation, { data, loading, error }] = useRegisterMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
+      }
+export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
+export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;

@@ -58,13 +58,17 @@ export const register = async (
     const { email, password, username } = req.body;
 
     if (!email || !password || !username) {
-      return res.sendStatus(400);
+      return res.status(400).json({
+        message: "Email, password and username are required"
+      });
     }
 
     const existingUser = await getUserByEmail(email);
 
     if (existingUser) {
-      return res.sendStatus(400);
+      return res.status(400).json({
+        message: "User already exists with this email"
+      });
     }
 
     const salt = random();
@@ -83,7 +87,7 @@ export const register = async (
       { expiresIn: '1d' }
     );
 
-    return res.status(200).json({ username: newUser.username, token }).end();
+    return res.status(200).json({ username: newUser.username, token, message: "User successfully registered" }).end();
   } catch (error) {
     console.error(error);
     return res.sendStatus(400);

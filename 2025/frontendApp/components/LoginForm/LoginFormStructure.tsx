@@ -9,14 +9,14 @@ import { ApolloError } from '@apollo/client';
 interface LoginFormStructureProps {
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   handleType: (e: ChangeEvent<HTMLInputElement>) => void;
-  fetchMessage: string;
-  errorMessage: ApolloError;
+  fetchMessage: string | undefined;
+  errorMessage: ApolloError | undefined;
 }
 
 const LoginFormStructure: FC<LoginFormStructureProps> = ({ handleSubmit, handleType, fetchMessage, errorMessage }) => {
   return (
     <StyledWrapper>
-      {fetchMessage?.length > 0 && <p>{fetchMessage}</p>}
+      {fetchMessage && fetchMessage?.length > 0 && <p>{fetchMessage}</p>}
       {errorMessage && <p>{errorMessage.message}</p>}
       <form onSubmit={(e) => handleSubmit(e)}>
         <fieldset>

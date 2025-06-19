@@ -12,7 +12,6 @@ import { updateIsAuth } from '@/features/auth';
 import { SIGNIN } from '@/graphQl/queries';
 import { SignInResponse } from '@/types/middleware-types';
 
-
 const LoginFormLogic: FC = () => {
   const dispatch = useDispatch();
   const [fetchMessage, setFetchMessage] = useState<string>();
@@ -62,6 +61,7 @@ const LoginFormLogic: FC = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    cleanup();
     const formDataObject = new FormData(e.currentTarget);
     const completeData = Object.fromEntries(formDataObject.entries()) as unknown as LoginFormInt;
     const userLoginData = {
@@ -101,7 +101,7 @@ const LoginFormLogic: FC = () => {
         cleanup()
         setErrorMessage({ message: data.signIn.message } as ApolloError);
       }
-      else {
+      else if (data?.signIn?.code === 200) {
         setFetchMessage('Logged in successfully')
         setErrorMessage(undefined)
         if (data?.signIn?.token) {

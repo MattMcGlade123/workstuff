@@ -1,23 +1,33 @@
 'use client';
 
-import React, { FC, FormEvent, useCallback, useState } from 'react';
+import React, { FC, FormEvent, useCallback, useEffect, useState } from 'react';
 
 import RegisterFormStructure from './RegisterFormStructure';
-import { RegisterFormInt, RegisterResponse } from '@/custom-type';
-import { fetchData } from '@/utils/fetchData';
+import { RegisterFormInt } from '@/custom-type';
 import { validateData } from '@/utils/validateData';
 import { updateIsAuth } from '@/features/auth';
 import { useDispatch } from 'react-redux';
-
+import { REGISTER } from '@/graphQl/queries';
+import { ApolloError, useMutation } from '@apollo/client';
+import { RegisterResponse } from '@/types/middleware-types';
 
 const RegisterFormLogic: FC = () => {
   const dispatch = useDispatch();
   const [fetchMessage, setFetchMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState<ApolloError>();
   const [formValues, setFormValues] = useState<RegisterFormInt>({
     email: '',
     username: '',
     password: '',
   });
+
+  const cleanup = () => {
+    setFetchMessage('')
+    setErrorMessage(undefined)
+    localStorage.removeItem('product-api-token')
+  }
+
+  const [registerUser, { data, error }] = useMutation<{register: RegisterResponse, error: any}>(REGISTER);
 
   const handleType = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
@@ -58,40 +68,23 @@ const RegisterFormLogic: FC = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    cleanup();
     const formDataObject = new FormData(e.currentTarget);
     const completeData = Object.fromEntries(formDataObject.entries()) as unknown as RegisterFormInt;
-    const dataToValidate = {
+    const registerData = {
       email: completeData.email,
       username: completeData.username,
       password: completeData.password,
     }
 
-    const hasAllData = validateData(dataToValidate)
+    const hasAllData = validateData(registerData)
 
     if (hasAllData) {
-      const { finalData, error } = await fetchData<RegisterResponse>('http://localhost:8080/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(dataToValidate),
-      })
-
-      if (error) {
-        setFetchMessage(error)
-      }
-      else if (finalData?.error) {
-        setFetchMessage(finalData?.error)
-      }
-      else {
-        setFetchMessage('You have been registered')
-        if (finalData?.token) {
-          localStorage.setItem('product-api-token', finalData?.token)
+      registerUser({
+        variables: {
+          input: registerData
         }
-        setFetchMessage(`Thank you ${finalData?.username} for registering`)
-        dispatch(updateIsAuth(true));
-        e.currentTarget?.reset();
-      }
+      })
     }
     else {
       setFetchMessage('Missing required data')
@@ -102,10 +95,33 @@ const RegisterFormLogic: FC = () => {
     }
   }
 
+  useEffect(() => {
+    if (data) {
+      console.log('data', data);
+      if (data?.error) {
+        cleanup()
+        setErrorMessage(data?.error)
+      }
+      else if (data?.register?.code === 400) {
+        cleanup()
+        setErrorMessage({ message: data.register.message } as ApolloError);
+      }
+      else if (data?.register?.code === 200) {
+        setFetchMessage('Register successfully')
+        setErrorMessage(undefined)
+        if (data?.register?.token) {
+          localStorage.setItem('product-api-token', data?.register.token)
+        }
+        dispatch(updateIsAuth(true));
+      }
+    }
+  }, [data, error])
+
   const componentProps = {
     handleSubmit,
     handleType,
-    fetchMessage
+    fetchMessage,
+    errorMessage
   }
 
   return <RegisterFormStructure {...componentProps

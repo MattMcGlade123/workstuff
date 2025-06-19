@@ -69,6 +69,30 @@ type Mutation {
   createListing(input: CreateListingInput!): CreateListingResponse!
   "Signs user in"
   signIn(input:SignInInput): SignInResponse!
+  "Register a new user"
+  register(input: RegisterInput!): RegisterResponse!
+}
+
+input RegisterInput {
+  "The user's email address"
+  email: String!,
+  "The user's password"
+  password: String!,
+  "The users username"
+  username: String!
+}
+
+type RegisterResponse {
+    "Similar to HTTP status code, represents the status of the mutation"
+  code: Int!
+  "Indicates whether the mutation was successful"
+  success: Boolean!
+  "The token for the user for authentication"
+  token: String
+  "Human-readable message for the UI"
+  message: String!
+  "The user's username"
+  username: String
 }
 
 input SignInInput {

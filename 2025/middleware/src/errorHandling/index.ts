@@ -1,4 +1,4 @@
-import { ErrorResponse } from "../../custom-types";
+import { ErrorResponse } from "../custom-types";
 
 export const errorHandling = (errorType: number, errorMessage: string): ErrorResponse => {
   switch (errorType) {

@@ -72,21 +72,36 @@ export const resolvers: Resolvers = {
         };
       }
     },
-    createListing: async (_, { input }, { dataSources }) => {
+    register: async (_, { input }, { dataSources }) => {
       try {
-        const response = await dataSources.listingAPI.createListing(input);
+        const response = await dataSources.productAPI.register(input);
         return {
           code: 200,
           success: true,
-          message: "Listing successfully created!",
-          listing: response,
+          message: "User successfully registered!",
+          token: response.token,
         };
       } catch (err) {
+
+        const status = err.extensions?.response?.status;
+        if (status === 403) {
+          return errorHandling(status, err.extensions?.response?.body?.message)
+        }
+
+        if (err.extensions?.response?.status === 400) {
+          return {
+            code: 400,
+            success: false,
+            message: "Bad request - missing required fields",
+            token: null,
+          };
+        }
+
         return {
           code: 500,
           success: false,
-          message: `Something went wrong: ${err.extensions.response.body}`,
-          listing: null,
+          message: "Something went wrong. Please try again later.",
+          token: null,
         };
       }
     },

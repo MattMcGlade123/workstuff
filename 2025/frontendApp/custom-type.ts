@@ -69,22 +69,6 @@ export interface AddResponse {
   upsertedCount: number,
   matchedCount: number
 }
-
-// Response types
-
-export interface RegisterResponse {
-  username: string,
-  token: string,
-  error: any
-}
-
-export interface LoginResponse {
-  username: string,
-  token: string,
-  error: any
-}
-
-
 export interface CheckAuthResponse {
   authenticated: boolean,
   error: any
