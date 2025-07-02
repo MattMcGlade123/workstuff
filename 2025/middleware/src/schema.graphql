@@ -31,7 +31,7 @@ type Product {
   "The name of the product"
   name: String!,
   "The price of the product"
-  price: Int!,
+  price: Float!,
  "The price of the product but formated"
   formattedPrice: String!
   "The image of the product"
