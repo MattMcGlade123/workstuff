@@ -97,7 +97,6 @@ const RegisterFormLogic: FC = () => {
 
   useEffect(() => {
     if (data) {
-      console.log('data', data);
       if (data?.error) {
         cleanup()
         setErrorMessage(data?.error)

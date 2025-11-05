@@ -12,7 +12,6 @@ export function generateMetadata(): Metadata {
 export default async function Page(props: any) {
   const { productSlug } = await props?.params;
   const { data, error } = await query({ query: A_PRODUCT, variables: { productSlug } });
-  console.log('data', data)
 
   const componentProps = {
     thisProduct: data.aProduct,

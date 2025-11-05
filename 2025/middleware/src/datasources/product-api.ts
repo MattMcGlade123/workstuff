@@ -1,5 +1,5 @@
 import { RESTDataSource } from "@apollo/datasource-rest";
-import { SignInInput, ProductListType, SignInResponse, RegisterInput, RegisterResponse } from "../types";
+import { SignInInput, ProductListType, SignInResponse, RegisterInput, RegisterResponse, OrderListType } from "../types";
 
 export class ProductAPI extends RESTDataSource {
   baseURL = process.env.API_URL || "http://localhost:8080/";
@@ -28,4 +28,7 @@ export class ProductAPI extends RESTDataSource {
     });
   }
 
+  getOrderList(): Promise<OrderListType> {
+    return this.get<OrderListType>("orders");
+  }
 }

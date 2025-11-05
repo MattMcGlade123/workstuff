@@ -25,6 +25,9 @@ export const resolvers: Resolvers = {
         }
       });
     },
+    orderList: (_, __, { dataSources }) => {
+      return dataSources.productAPI.getOrderList();
+    },
   },
   Product: {
     formattedPrice: (product) => {

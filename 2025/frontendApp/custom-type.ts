@@ -21,6 +21,12 @@ export interface AllProductData {
   error: any
 }
 
+export interface AllOrderData {
+  pageName: string,
+  orders: ProductType[],
+  error: any
+}
+
 export interface ListPageData {
   pageName: string,
   products: ProductType[],
@@ -32,7 +38,7 @@ export interface AllSingleProductData {
 }
 
 export interface SingleProductDataInt {
-  thisProduct: ProductType
+  thisProduct: ProductType | undefined
 }
 
 export interface OptionsInt {

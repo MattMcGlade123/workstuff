@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
-import ProductListStructure from './ProductListStructure';
+import ProductListStructure from './OrdersListStructure';
 import { query } from '@/lib/ApolloClient';
-import { PRODUCT_LIST } from '@/graphQl/queries';
+import { ORDERS_LIST } from '@/graphQl/queries';
 
 export const metadata: Metadata = {
   title: 'A lovely product site',
@@ -9,11 +9,11 @@ export const metadata: Metadata = {
 }
 
 export default async function ProductList() {
-  const { data, error } = await query({ query: PRODUCT_LIST });
+  const { data, error } = await query({ query: ORDERS_LIST });
 
   const componentProps = {
-    pageName: data?.productList?.pageName || 'Page title',
-    products: data?.productList?.products || [],
+    pageName: data?.ordersList?.pageName || 'Page title',
+    orders: data?.ordersList?.products || [],
     error
   }
 

@@ -53,3 +53,20 @@ export const REGISTER = gql`
     }
   }
 `;
+
+export const ORDERS_LIST = gql`
+  query OrderList {
+   orderList {
+    pageName
+    products {
+      name
+      price
+      slug
+      image {
+        alt
+        url
+      }
+    }
+  }
+}
+`;

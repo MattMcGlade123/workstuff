@@ -10,7 +10,7 @@ export const { getClient, query, PreloadQuery } = registerApolloClient(() => {
     cache: new InMemoryCache(),
     link: new HttpLink({
       // this needs to be an absolute url, as relative urls cannot be used in SSR
-      uri: "http://localhost:4000",
+      uri: process.env.NEXT_MIDDLEWARE_URL || "http://localhost:4000",
       fetchOptions: {
         // you can pass additional options that should be passed to `fetch` here,
         // e.g. Next.js-related `fetch` options regarding caching and revalidation

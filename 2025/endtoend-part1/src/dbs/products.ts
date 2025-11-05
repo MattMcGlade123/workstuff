@@ -19,7 +19,7 @@ const productListModelSchema = new mongoose.Schema({
 
 export const productListModel = mongoose.model('ProductList', productListModelSchema);
 
-export const getAllPageData = (): Promise<ProductListType[]> => productListModel.find({});
+export const getAllProductPageData = (): Promise<ProductListType[]> => productListModel.find({});
 export const getProductBySlug = (slug: string): Promise<{ products: ProductType[] } | null> => productListModel.findOne(
   { 'products.slug': slug }, // This finds the data that matches in the document
   { products: { $elemMatch: { 'slug': slug } }, _id: 0 } // This tells mongodb what to return rather than the whole data

@@ -104,6 +104,14 @@ export type MutationSignInArgs = {
   input?: InputMaybe<SignInInput>;
 };
 
+export type OrderListType = {
+  __typename?: 'OrderListType';
+  /** An array of all the products */
+  orders: Array<Product>;
+  /** The page name for the product list */
+  pageName: Scalars['String']['output'];
+};
+
 /** An individual product item */
 export type Product = {
   __typename?: 'Product';
@@ -116,7 +124,7 @@ export type Product = {
   /** The name of the product */
   name: Scalars['String']['output'];
   /** The price of the product */
-  price: Scalars['Int']['output'];
+  price: Scalars['Float']['output'];
   /** The path of the image for the product page */
   slug: Scalars['String']['output'];
 };
@@ -137,6 +145,8 @@ export type Query = {
   featuredListings: Array<Listing>;
   /** Returns the details about this listing */
   listing?: Maybe<Listing>;
+  /** Returns list of orders */
+  orderList?: Maybe<OrderListType>;
   /** Returns list of products */
   productList?: Maybe<ProductListType>;
 };
@@ -217,7 +227,7 @@ export type RegisterMutationVariables = Exact<{
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'RegisterResponse', code: number, username?: string | null, token?: string | null } };
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'RegisterResponse', code: number, username?: string | null, token?: string | null, message: string } };
 
 
 export const GetProductListDocument = gql`
@@ -357,6 +367,7 @@ export const RegisterDocument = gql`
     code
     username
     token
+    message
   }
 }
     `;

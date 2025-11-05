@@ -45,6 +45,13 @@ type ProductListType {
   products: [Product!]!
 }
 
+type OrderListType {
+  "The page name for the product list"
+  pageName: String!,
+  "An array of all the products"
+  orders: [Product!]!
+}
+
 type Query {
   "A curated array of listings to feature on the homepage"
   featuredListings: [Listing!]!
@@ -54,6 +61,8 @@ type Query {
   productList: ProductListType
   "Returns details for a single product"
   aProduct(productSlug: String!): Product
+  "Returns list of orders"
+  orderList: OrderListType
 }
 
 type Amenity {

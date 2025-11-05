@@ -1,11 +1,8 @@
-# FOR database
-
-FROM mongo
-RUN mongosh
-RUN use shop
-
-
-
-# For API
-RUN yarn set version stable
-RUN yarn install
+FROM node:20.9.0
+WORKDIR /app
+COPY package.json ./
+COPY yarn.lock ./
+RUN yarn
+COPY . .
+RUN yarn build
+CMD ["yarn", "start"]
