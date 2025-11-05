@@ -11,8 +11,8 @@ import { SingleProductDataInt } from '@/custom-type';
 const ProductDetailsStructure: FC<SingleProductDataInt> = ({ thisProduct }) => {
   return (
     <StyledWrapper>
-      <StyledTitle>{thisProduct.name}</StyledTitle>
-      <h3>£{thisProduct.price}</h3>
+      {thisProduct && <StyledTitle>{thisProduct.name}</StyledTitle>}
+      {thisProduct && <h3>£{thisProduct.price}</h3>}
       <img src={thisProduct?.image?.url} alt={thisProduct?.image?.alt} />
     </StyledWrapper>
   );

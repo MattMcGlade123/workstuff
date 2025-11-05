@@ -12,21 +12,26 @@ export const login = async (
   try {
     const { email, password } = req.body;
 
-    console.log('email', email);
-    console.log('password', password);
-
     if (!email || !password) {
-      return res.sendStatus(400);
+      return res.status(400).json({
+        message: "Email and password are required"
+      });
     }
 
     const user = await getUserByEmail(email).select('+authentication.salt +authentication.password');
+
     if (!user) {
-      return res.sendStatus(400);
+      return res.status(403).json({
+        message: "Invalid credentials"
+      });
     }
 
     const expectedHash = authentication(user.authentication.salt, password);
+
     if (user.authentication.password !== expectedHash) {
-      return res.sendStatus(403);
+      return res.status(403).json({
+        message: "Invalid credentials"
+      });
     }
 
     const token = jwt.sign(
@@ -35,10 +40,13 @@ export const login = async (
       { expiresIn: '1d' }
     );
 
-    return res.status(200).json({ token }).end();
+    return res.status(200).json({ token });
+
   } catch (error) {
-    console.error(error);
-    return res.sendStatus(400);
+    console.error('Login error:', error);
+    return res.status(500).json({
+      message: "Internal server error"
+    });
   }
 };
 
@@ -50,13 +58,17 @@ export const register = async (
     const { email, password, username } = req.body;
 
     if (!email || !password || !username) {
-      return res.sendStatus(400);
+      return res.status(400).json({
+        message: "Email, password and username are required"
+      });
     }
 
     const existingUser = await getUserByEmail(email);
 
     if (existingUser) {
-      return res.sendStatus(400);
+      return res.status(400).json({
+        message: "User already exists with this email"
+      });
     }
 
     const salt = random();
@@ -75,7 +87,7 @@ export const register = async (
       { expiresIn: '1d' }
     );
 
-    return res.status(200).json({ username: newUser.username, token }).end();
+    return res.status(200).json({ username: newUser.username, token, message: "User successfully registered" }).end();
   } catch (error) {
     console.error(error);
     return res.sendStatus(400);

@@ -1,10 +1,10 @@
-import { addProduct, getAllPageData, getProductBySlug } from '../dbs/products';
+import { addProduct, getAllProductPageData, getProductBySlug } from '../dbs/products';
 import express from 'express';
 
 export const getAllProductsData = async (req: express.Request,
   res: express.Response) => {
   try {
-    const productListData = await getAllPageData();
+    const productListData = await getAllProductPageData();
 
     if (!productListData) {
       return res.sendStatus(400)

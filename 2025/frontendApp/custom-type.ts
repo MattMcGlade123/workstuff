@@ -21,6 +21,12 @@ export interface AllProductData {
   error: any
 }
 
+export interface AllOrderData {
+  pageName: string,
+  orders: ProductType[],
+  error: any
+}
+
 export interface ListPageData {
   pageName: string,
   products: ProductType[],
@@ -32,7 +38,7 @@ export interface AllSingleProductData {
 }
 
 export interface SingleProductDataInt {
-  thisProduct: ProductType
+  thisProduct: ProductType | undefined
 }
 
 export interface OptionsInt {
@@ -69,22 +75,6 @@ export interface AddResponse {
   upsertedCount: number,
   matchedCount: number
 }
-
-// Response types
-
-export interface RegisterResponse {
-  username: string,
-  token: string,
-  error: any
-}
-
-export interface LoginResponse {
-  username: string,
-  token: string,
-  error: any
-}
-
-
 export interface CheckAuthResponse {
   authenticated: boolean,
   error: any
