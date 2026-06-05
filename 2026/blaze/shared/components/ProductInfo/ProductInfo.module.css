@@ -1,0 +1,19 @@
+.size-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+
+  >li {
+
+    &:hover {
+      background-color: var(--mantine-color-gray-2);
+      cursor: pointer;
+    }
+  }
+}
+
+.active-size {
+  background-color: var(--mantine-color-gray-2);
+}

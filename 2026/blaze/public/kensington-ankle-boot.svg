@@ -1,0 +1,16 @@
+<svg width="300" height="300" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="300" height="300" fill="#f8f9fa"/>
+  <rect x="50" y="50" width="200" height="200" rx="8" fill="#e9ecef"/>
+  
+  <!-- Boot outline -->
+  <path d="M100 180 L100 160 Q100 140 120 140 L160 140 Q180 140 180 160 L180 200 Q180 220 160 220 L120 220 Q100 220 100 200 Z" fill="#6c757d"/>
+  
+  <!-- Heel -->
+  <rect x="160" y="180" width="15" height="40" fill="#495057"/>
+  
+  <!-- Eagle head detail -->
+  <circle cx="140" cy="160" r="8" fill="#ffd43b"/>
+  
+  <text x="150" y="240" text-anchor="middle" fill="#495057" font-family="Arial, sans-serif" font-size="12" font-weight="bold">Kensington Ankle Boot</text>
+  <text x="150" y="255" text-anchor="middle" fill="#6c757d" font-family="Arial, sans-serif" font-size="10">Kurt Geiger London</text>
+</svg>

@@ -1,0 +1,16 @@
+.hero-wrapper {
+  position: relative;
+
+  img {
+    width: 100%;
+  }
+}
+
+.hero-content {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: var(--mantine-color-white);
+}

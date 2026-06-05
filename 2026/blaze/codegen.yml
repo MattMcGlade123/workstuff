@@ -1,0 +1,14 @@
+schema:
+  https://lpmrhil6zfexvezphyqzfc5prm.appsync-api.eu-west-1.amazonaws.com/graphql:
+    headers:
+      Authorization: 'todo:auth' # temp dev token
+documents:
+  - 'shared/graphql/**/*.ts'
+generates:
+  shared/graphql/generated.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-graphql-request
+    config:
+      rawRequest: false

@@ -1,0 +1,32 @@
+---
+description: a11y basics aligned with Mantine and React
+globs: "**/*.tsx"
+alwaysApply: false
+---
+
+# Accessibility
+
+## Forms and controls
+
+- Every **input** needs an **associated label**: Mantine **`Input`** / **`TextInput`** etc. use **`label`**; for custom compositions, use **`aria-label`** or **`aria-labelledby`** when a visible label is not practical.
+- **Error messages** should be available to assistive tech: use Mantine’s **`error`** prop on inputs where applicable so associations are not only visual.
+- **Buttons** that only show an icon must have **`aria-label`** (or visible text).
+
+## Focus and keyboard
+
+- Do **not** remove **`outline`** / focus indicators without providing an **equivalent** visible focus style (Mantine defaults are a good baseline).
+- Interactive controls must be reachable via **Tab** and activatable with **Enter** / **Space** as appropriate; avoid **`onClick`** on non-interactive elements without **`role`** and keyboard handlers unless using a proper **`Button`** / **`UnstyledButton`**.
+
+## Structure and content
+
+- Use **semantic headings** (`Title` order, one main topic per section); avoid skipping levels without reason.
+- **Data tables**: prefer semantic **`<table>`** (Mantine **`Table`**) for tabular data; include **`scope`** on headers when building complex tables.
+- Prefer **real text** over images of text; set **`alt`** on informative images (`alt=""` only for decorative).
+
+## Motion and theme
+
+- Respect **`prefers-reduced-motion`** for non-essential animation when adding custom motion (Mantine handles much of this; check custom CSS).
+
+## Testing
+
+- Prefer **Testing Library** queries that reflect **accessible names** (`getByRole`, `getByLabelText`)—they double as a11y smoke checks.

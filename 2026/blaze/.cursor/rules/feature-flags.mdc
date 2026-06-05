@@ -1,0 +1,27 @@
+---
+description: Feature flags (e.g. LaunchDarkly) — client boundary, defaults, and safety
+alwaysApply: true
+---
+
+# Feature flags (when you add a SDK)
+
+Use this when introducing **LaunchDarkly**, **Unleash**, or similar—patterns apply broadly.
+
+## Where the provider lives
+
+- Flag **React SDKs** are almost always **client-only**. Wrap with **`'use client'`** provider component high in the tree (e.g. under or beside **`MantineProvider`** / **`NuqsAdapter`** in `app/layout.tsx` **only** if the SDK supports SSR-safe hydration; otherwise use a **small client shell** that wraps `children`).
+- **Do not** call flag hooks from **Server Components** unless the vendor documents a server API—and never use server flags to **hide secrets**; flags in the client are observable.
+
+## Behavior
+
+- **Default/fallback** when the SDK is offline or flag missing: choose **safe** product defaults (prefer “off” for risky features unless product says otherwise).
+- **Avoid layout shift**: don’t flash opposite UI—use loading state or **consistent skeleton** until flags resolve when flicker would confuse users.
+- **Name flags** with a clear prefix (e.g. `csr-search-v2`); document flag purpose in code or team docs.
+
+## Testing
+
+- **Mock** the flag SDK in tests; assert both **on** and **off** branches for critical paths.
+
+## Security
+
+- Flags **gate UX**, not **authorization**. Sensitive operations must still be **enforced on the server/API**—assume users can bypass client-side checks.

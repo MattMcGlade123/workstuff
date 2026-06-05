@@ -1,0 +1,12 @@
+---
+description: React 19, Next App Router, and TypeScript/ESLint alignment
+alwaysApply: true
+---
+
+# React and Next.js
+
+- **Server Components** (default in `app/`): **no React hooks** (`useState`, `useEffect`, `useContext`, custom hooks, etc.), **no browser-only APIs** (`window`, `document`, `localStorage`). Use `async` Server Components for server data fetching when appropriate. If you need hooks or browser APIs, move that code into a **child Client Component** (or mark the file with `'use client'` when the whole module must be client).
+- **Client Components**: add **`'use client'`** at the top of the file (or consume a client leaf). Here hooks and browser APIs are allowed; follow **Rules of Hooks**.
+- **App Router (`app/`)**: prefer Server Components by default; reserve `'use client'` for interactivity, browser APIs, or libraries that require a client boundary (e.g. much of Mantine in leaf components).
+- **Boundaries**: keep data-fetching and routing concerns in the appropriate layer; colocate with existing patterns under `app/` and `shared/`.
+- Follow **TypeScript**, **Prettier**, and **ESLint** (see `typescript-eslint-prettier` rule when editing `.ts`/`.tsx`): run `yarn lint` / `next lint --dir app --dir shared`; fix root causes instead of masking with `any` unless there is an explicit, documented exception.

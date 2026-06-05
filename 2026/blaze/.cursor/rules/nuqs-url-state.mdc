@@ -1,0 +1,27 @@
+---
+description: Type-safe URL search params with nuqs (App Router)
+globs: "**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# URL state with nuqs
+
+## Wiring (already in the app)
+
+- Root layout wraps the tree with **`NuqsAdapter`** from **`nuqs/adapters/next/app`** (`app/layout.tsx`). Do **not** add a second adapter unless you have an exceptional nested layout need.
+
+## Where hooks run
+
+- **`useQueryState`**, **`useQueryStates`**, **`parseAs*`**, and related **nuqs** hooks run only in **Client Components**. Add **`'use client'`** to the file (or keep hooks in a client leaf component). **Never** call nuqs hooks from a Server Component.
+
+## Conventions
+
+- Prefer **nuqs** for state that should be **shareable, bookmarkable, or restorable from the URL** (filters, tabs, pagination, search type). Prefer **React state** (`useState`) when the value is **purely transient UI** and should not appear in the URL.
+- Use **`parseAsString`**, **`parseAsInteger`**, **`parseAsStringEnum`**, etc., for typed parsing; define **defaults** that match product expectations so missing params behave predictably.
+- **Keep param names stable**—changing query keys breaks shared links; treat renames as a small migration (redirect or accept both briefly).
+- **Colocate** parsers with the feature (e.g. next to `*Logic.tsx`) or a small `searchParams.ts` module if multiple files share the same shape.
+- Avoid duplicating the same key string in many files: **export** shared parser definitions or a tiny constants object for query keys.
+
+## Testing
+
+- In tests, set **initial URL** via the test harness (e.g. `window.history`, Testing Library + router mocks) so nuqs reads the expected search string; align with **`jest.setup.ts`** navigation mocks when asserting navigation behavior.

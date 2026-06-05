@@ -1,0 +1,12 @@
+---
+description: GraphQL documents, graphql-codegen, and generated types
+globs: "shared/graphql/**/*.ts"
+alwaysApply: false
+---
+
+# GraphQL and codegen
+
+- **Documents** (queries/fragments) live under `shared/graphql/` (e.g. `queries/*.ts`). Use **`graphql-tag`** (`gql`) as in existing files.
+- **`shared/graphql/generated.ts` is generated** by GraphQL Code Generator (`codegen.yml`). **Do not hand-edit** it; run **`yarn codegen`** after changing operations or when the schema output needs refreshing.
+- **Clients and mappers** belong in `shared/graphql/utils/` (e.g. `graphqlClient.ts`, `dataMappers/`)—keep side effects and HTTP concerns there, not in raw query files when avoidable.
+- **`Authorization`** and remote schema URLs in `codegen.yml` are environment-specific; do not commit real secrets—use env or local overrides per team practice.

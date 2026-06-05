@@ -1,0 +1,21 @@
+/**
+ * Theme `styles` with nested selectors require @mantine/emotion’s styles transform.
+ * Without it, those keys are forwarded to React’s `style` prop (invalid).
+ * Button passes `variant` to Box → `data-variant`; target that for disabled primary CTAs.
+ */
+[data-variant='primaryButton']:where(
+  :disabled:not([data-loading]),
+  [data-disabled]:not([data-loading])
+) {
+  background: var(--mantine-color-gray-8);
+  color: var(--mantine-color-white);
+  border: 1px solid transparent;
+  opacity: 0.55;
+}
+
+/**
+// custom CSS variables
+**/
+:root {
+  --header-height: 70px;
+}

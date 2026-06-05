@@ -1,0 +1,39 @@
+---
+description: App vs shared folders, component file layout, utils and reuse
+alwaysApply: true
+---
+
+# Project structure and reuse
+
+## Where code lives
+
+- **Next.js routes and page-level flows** live under `app/` (e.g. `app/search/`, `page.tsx`, route segments).
+- **Reusable UI and cross-route building blocks** live under `shared/components/`, grouped by feature in their own folder (e.g. `shared/components/tableData/`).
+- **Shared non-UI code** uses existing homes: `shared/utils/`, `shared/types/`, `shared/constants/`, `shared/graphql/`, `shared/theme/`, etc. Do not put page-only code in `shared/` or generic components under `app/` unless the codebase already does so for a clear reason.
+
+## Component file layout
+
+Use the established split for each component folder:
+
+| File | Role |
+|------|------|
+| `index.tsx` | Public entry: props/types export, thin wrapper that forwards to Logic. |
+| `*Logic.tsx` | Hooks, state, data fetching, handlers, composition of Structure. |
+| `*Structure.tsx` | Presentational UI (Mantine + layout). Keep mostly declarative. |
+| `*Styles.tsx` or co-located styles | Optional: use when custom styling is non-trivial; prefer Mantine props/theme first. |
+
+Naming: match existing folders (`HeaderLogic.tsx`, `SearchStructure.tsx`, etc.).
+
+## Logic and efficiency
+
+- **Extract** repeatable pure functions, formatters, and guards to `shared/utils/` (or the closest existing module) instead of inlining large logic in components.
+- **Reuse** existing components and utilities before duplicating; prefer one clear abstraction over copy-paste.
+- Keep **Logic** focused on behavior; **Structure** focused on markup and Mantine composition.
+
+## Pure helpers (arrays, objects, strings, etc.)
+
+When you need a **named behavior**—e.g. filtering/mapping/sorting/grouping lists, normalizing strings, parsing IDs—**do this order**:
+
+1. **Look first** in `shared/utils/` and other shared homes (`shared/graphql/utils/` for GraphQL-shaped helpers, existing feature modules) for something you can reuse or extend.
+2. **If nothing fits**, add a **small exported helper** in the right util module (or a new file under `shared/utils/` when it is domain-generic), then import it from `*Logic.tsx` or the caller—not a free function hidden at the bottom of a component file.
+3. **Inline in the component** only for trivial one-offs that are clearly single-use and easier to read in place (simple `.filter`/`map` one-liners are fine); anything you might need again or that obscures the component belongs in a util.

@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Get the current branch name
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+
+# Extract Jira ticket from branch name
+JIRA_KEY=$(echo "$BRANCH_NAME" | grep -oE 'ENGS-[0-9]+' || true)
+
+# Read commit message
+COMMIT_MSG=$(cat "$1")
+
+# If we have a jira reference, and the commit message doesn't already have one, append to the end of the message "\n\nRefs: $JIRA_KEY"
+if [ -n "$JIRA_KEY" ]; then
+  TICKET_EXISTS=$(grep -cE "(https://kurtgeiger\.atlassian\.net/browse/)?$JIRA_KEY" "$1" 2>/dev/null | tr -d '\n\r' || echo "0")
+  TICKET_EXISTS=${TICKET_EXISTS:-0}
+  
+  if [ "$TICKET_EXISTS" -eq 0 ]; then
+    printf "\n\nRefs: %s" "$JIRA_KEY" >> "$1"
+  fi
+
+  # No branch ticket ref => check commit message
+  elif echo "$COMMIT_MSG" | grep -qE 'ENGS-[0-9]+'; then
+  :
+
+  # No ticket no. anywhere => fail
+  else
+    echo "ERROR: No Jira ticket found"
+    echo "Include ticket in branch name (e.g. feature/ENGS-1234-...)"
+    echo "Or include it in commit message (e.g. ENGS-1234: message)"
+    exit 1
+
+fi
+
+# Run commitlint
+npx commitlint --edit "$1"
+EXIT_CODE=$?
+exit $EXIT_CODE

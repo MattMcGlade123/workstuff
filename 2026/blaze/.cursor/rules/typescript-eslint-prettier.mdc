@@ -1,0 +1,21 @@
+---
+description: TypeScript strict mode, ESLint rules, Prettier, and import order
+globs: "**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# TypeScript
+
+- **`tsconfig.json`** uses **`strict: true`** (and `noEmit`, `moduleResolution: "bundler"`). New code should type-check without loosening compiler options project-wide.
+- Prefer **explicit types** on component props, public helpers, and GraphQL mappers. **`@typescript-eslint/no-explicit-any` is off** for legacy code—avoid adding new `any`; use narrow types, generics, or `unknown` + narrowing instead.
+- **`ignoreRestSiblings`** applies to unused vars: omit unused destructured fields with a rest pattern when appropriate.
+
+# Prettier (`.prettierrc`)
+
+- Defaults: **printWidth 100**, **singleQuote**, **trailingComma `"all"`**, **semicolons**, **LF**. **`prettier/prettier` is an ESLint error**—run `yarn format` / fix on save rather than fighting style in review.
+
+# ESLint (`eslint.config.mjs`)
+
+- **`simple-import-sort/imports`** order: `react` → **external `@?\\w`** → **internal** (`components`, `utils`, `queries`, `types`) → **relative** (`./`). Match this when adding imports.
+- **`no-console`**: only **`console.error`** and **`console.log`** are allowed—use `log`/`error` or remove debug prints before merge.
+- **Do not edit generated or ignored sources** for lint fixes (e.g. `shared/graphql/generated.ts` is ignored by ESLint—regenerate via codegen instead).

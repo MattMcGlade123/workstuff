@@ -1,0 +1,7 @@
+/* Shared styles that can be used throughout */
+
+.unstyled-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}

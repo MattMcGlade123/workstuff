@@ -1,0 +1,22 @@
+---
+description: Environment variables, secrets, and what is safe in the browser
+alwaysApply: true
+---
+
+# Security and environment variables
+
+## Client vs server (Next.js + static export)
+
+- This app uses **`output: 'export'`** (see `next.config.ts`). There is **no long-lived Node server** serving your UI bundle—built JS is public. Treat **anything in the client bundle** as visible (minified, not secret).
+- Only variables prefixed **`NEXT_PUBLIC_`** are exposed to browser code **by design**. Names without that prefix are **not** “hidden” inside client components: if a value is imported into a file under `'use client'` or into code that ships to the browser, it can end up in the bundle. **Never pass API keys, shared secrets, or admin tokens through client components or `NEXT_PUBLIC_` vars.**
+
+## What to do
+
+- **Public, non-sensitive config** the UI truly needs (e.g. public GraphQL HTTP endpoint as in `TECH_STACK.md` / `NEXT_PUBLIC_GRAPHQL_ENDPOINT`): use **`NEXT_PUBLIC_*`** and document it in **`.env.example`** (name + one-line purpose, no real values).
+- **Secrets** (API keys to backends, service credentials): **server-only** usage—e.g. future Route Handlers / server-only modules—not in static client code. For a static export, prefer **gateway auth** users already have (cookies, hosted BFF) or **short-lived tokens** from a secure backend—not a permanent secret in the repo.
+- **Do not commit** `.env`, `.env.local`, or real tokens. Use **`.env.dist` / `.env.example`** as templates; keep them updated when adding env vars.
+- **Codegen / CI**: `codegen.yml` and similar must not contain production secrets; use env injection or local overrides for auth headers.
+
+## Reviews
+
+- Flag PRs that add new **`NEXT_PUBLIC_`** vars or embed long tokens—confirm they are safe to expose and documented.

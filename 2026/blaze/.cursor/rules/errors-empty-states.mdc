@@ -1,0 +1,31 @@
+---
+description: Errors, loading, and empty UI for data fetching and GraphQL
+globs: "**/*.tsx"
+alwaysApply: false
+---
+
+# Errors, loading, and empty states
+
+## Principles
+
+- **Never fail silently**: if a request errors or returns unusable data, the user should see a **clear message** and a sensible **next step** (retry, go back, contact support) when product allows it.
+- **Distinguish** “still loading”, “nothing to show”, and “something went wrong”—use different UI for each.
+
+## GraphQL / `graphql-request`
+
+- Handle **`ClientError`** or failed responses: surface a **short, human-readable** message; **log** details with `console.error` (allowed by ESLint) for debugging, not raw stack traces to the user.
+- Prefer **one pattern per feature**: e.g. Mantine **`Alert`** with `color="red"` for errors, **`Loader`** or **`Skeleton`** for loading, **`Text`** / **`Empty`**-style messaging when a list is empty.
+
+## Mantine building blocks
+
+- **Errors**: `Alert`, optionally `Title` + `Text`; use `role="alert"`-friendly structure (Mantine alerts expose appropriate roles).
+- **Loading**: `Loader`, `Skeleton`, or overlay **`LoadingOverlay`** on tables/cards when refetching.
+- **Empty**: explicit copy (“No results for this search”) and optional **primary action** (clear filters, new search)—avoid a blank area with no explanation.
+
+## Logic vs Structure
+
+- Put **detection** (error object, empty array, `loading` flag) in **`*Logic.tsx`**; keep **`*Structure.tsx`** declarative with props like `error`, `isLoading`, `isEmpty`, `onRetry`.
+
+## Retry
+
+- For idempotent fetches, offer **Retry** that calls the same loader again; reset error state when a new request starts so stale errors do not linger.

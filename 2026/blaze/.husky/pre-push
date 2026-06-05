@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+# yarn generate-main && yarn eslint && yarn test && yarn build
+yarn eslint && yarn test && yarn build

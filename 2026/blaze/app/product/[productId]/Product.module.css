@@ -1,0 +1,9 @@
+.pdp-wrapper {
+  div:first-child {
+    max-width: 70vw;
+  }
+  img {
+    width: 100%;
+    height: auto;
+  }
+}

@@ -1,0 +1,11 @@
+---
+description: Yarn, Node, Next static export, and Mantine bundle hints
+alwaysApply: true
+---
+
+# Package and build tooling
+
+- **Package manager**: **`yarn`** (see `packageManager` in `package.json`). Avoid introducing conflicting lockfiles from npm/pnpm.
+- **Node**: **`>=20`** per `engines`—use a supported Node version locally and in CI.
+- **Next** (`next.config.ts`): **`output: 'export'`** (static export), **`images.unoptimized: true`**, production **`assetPrefix: './'`**. Paths and assets should work in a static hosting layout; avoid patterns that assume a Node server-only runtime unless the config changes.
+- **Mantine**: `experimental.optimizePackageImports` includes **`@mantine/core`** and **`@mantine/hooks`**—prefer named imports from those entry points as you already do.

@@ -1,0 +1,32 @@
+---
+description: Prefer Mantine components and props over ad-hoc CSS
+globs: "**/*.tsx"
+alwaysApply: false
+---
+
+# Mantine UI conventions
+
+## Layout and spacing
+
+- Prefer **Mantine layout components** with their props over raw flex/grid in `style` or one-off class hacks:
+  - Use `<Flex>`, `<Stack>`, `<Group>`, `<Grid>`, `<SimpleGrid>`, `<Box>` with props like `direction`, `gap`, `align`, `justify`, `wrap`, `grow`, etc.
+- Prefer **Mantine spacing/sizing props** (`m`, `mx`, `my`, `p`, `px`, `w`, `h`, `miw`, `mih`, etc.) and **theme tokens** over arbitrary pixel strings when possible.
+
+## Styling priority
+
+1. Component props (`c`, `bg`, `bd`, `radius`, `shadow`, variants).
+2. `styles` / `classNames` on the Mantine component when you need targeted overrides.
+3. Global or module CSS only when Mantine cannot express the need cleanly.
+
+## Consistency
+
+- Import from `@mantine/core` (and `@mantine/hooks` when needed); align with `shared/theme/mantine-theme.ts` for brand tokens.
+- Avoid duplicating the same layout pattern: extract a small shared Structure or a thin wrapper using Mantine primitives.
+
+```tsx
+// ❌ Avoid for layout
+<div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+
+// ✅ Prefer
+<Flex gap="md" align="center">
+```

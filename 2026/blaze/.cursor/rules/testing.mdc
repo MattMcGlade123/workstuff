@@ -1,0 +1,17 @@
+---
+description: Jest and Testing Library — meaningful coverage without excess
+globs: "**/*.test.{tsx,ts}"
+alwaysApply: false
+---
+
+# Testing
+
+- Co-locate tests as `*.test.tsx` / `*.test.ts` beside the source (see existing `Header.test.tsx`, `tableData.test.tsx`).
+- Target **behavior users care about** and **regression-prone logic**; avoid exhaustive testing of every private helper or brittle snapshots.
+- Prefer **Testing Library** queries tied to accessibility and user flow (`getByRole`, `getByLabelText`, etc.).
+- Mock **network, router, and external SDKs** at clear boundaries; avoid coupling tests to internal component state names or hook order.
+
+## Jest setup (this repo)
+
+- **`jest.config.mjs`** sets **`TZ=GMT`** for stable date/time assertions.
+- **`jest.setup.ts`** mocks **`next/navigation`** (`useRouter`, `usePathname`, `useSearchParams`). Extend or override mocks in a test only when the scenario requires it.
