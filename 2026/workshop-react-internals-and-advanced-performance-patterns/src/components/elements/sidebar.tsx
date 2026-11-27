@@ -1,0 +1,268 @@
+import { ChevronDown, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+
+//  ---------------------------------------------------------------------------
+//  TYPES
+//  ---------------------------------------------------------------------------
+
+interface Example {
+  id: string;
+  title: string;
+  path: string;
+}
+
+interface Section {
+  id: string;
+  title: string;
+  examples: Example[];
+}
+
+//  ---------------------------------------------------------------------------
+//  UTILS
+//  ---------------------------------------------------------------------------
+
+export const sections: Section[] = [
+  {
+    id: 'scheduling',
+    title: 'Scheduling',
+    examples: [
+      {
+        id: 'scheduling/long-tasks',
+        title: 'Long Tasks',
+        path: '/scheduling/long-tasks',
+      },
+      {
+        id: 'scheduling/its-fine',
+        title: '@pmndrs/its-fine',
+        path: '/scheduling/its-fine',
+      },
+      {
+        id: 'scheduling/custom',
+        title: '[custom] @pmndrs/its-fine',
+        path: '/scheduling/custom',
+      },
+      {
+        id: 'scheduling/suspend-react',
+        title: '[custom] @pmndrs/suspend-react',
+        path: '/scheduling/suspend-react',
+      },
+      {
+        id: 'use-history-selector/before',
+        title: '[before] useHistorySelector',
+        path: '/scheduling/use-history-selector/before',
+      },
+      {
+        id: 'use-history-selector/after',
+        title: '[after] useHistorySelector',
+        path: '/scheduling/use-history-selector/after',
+      },
+      {
+        id: 'jank-input/before',
+        title: '[before] Jank Input',
+        path: '/scheduling/jank-input/before',
+      },
+      {
+        id: 'jank-input/after',
+        title: '[after] Jank Input',
+        path: '/scheduling/jank-input/after',
+      },
+    ],
+  },
+  {
+    id: 'measuring',
+    title: 'Measuring',
+    examples: [
+      {
+        id: 'jquery',
+        title: 'jQuery',
+        path: '/measuring/jquery',
+      },
+      {
+        id: 'react-scan',
+        title: '@aidenybai/react-scan',
+        path: '/measuring/react-scan',
+      },
+      {
+        id: 'react-grab',
+        title: '@aidenybai/react-grab',
+        path: '/measuring/react-grab',
+      },
+    ],
+  },
+  {
+    id: 'measuring-behavior',
+    title: 'Measuring (Behavior)',
+    examples: [
+      {
+        id: 'measuring-behavior/rage-clicks',
+        title: 'Rage Clicks',
+        path: '/measuring-behavior/rage-clicks',
+      },
+      {
+        id: 'measuring-behavior/dead-clicks',
+        title: 'Dead Clicks',
+        path: '/measuring-behavior/dead-clicks',
+      },
+      {
+        id: 'measuring-behavior/scrolling',
+        title: 'Random Scrolling',
+        path: '/measuring-behavior/scrolling',
+      },
+      {
+        id: 'measuring-behavior/erratic-mouse',
+        title: 'Erratic Mouse',
+        path: '/measuring-behavior/erratic-mouse',
+      },
+    ],
+  },
+  {
+    id: 'compiling',
+    title: 'Compiling',
+    examples: [
+      {
+        id: 'jscodeshift-oss',
+        title: 'jscodeshift (OSS)',
+        path: '/compiling/jscodeshift-oss',
+      },
+      {
+        id: 'jscodeshift-custom',
+        title: 'jscodeshift (Custom)',
+        path: '/compiling/jscodeshift-custom',
+      },
+      {
+        id: 'ast-grep',
+        title: 'ast-grep',
+        path: '/compiling/ast-grep',
+      },
+      {
+        id: 'ts-morph',
+        title: 'ts-morph',
+        path: '/compiling/ts-morph',
+      },
+    ],
+  },
+  {
+    id: 'other',
+    title: 'Other Techniques',
+    examples: [
+      {
+        id: 'windowing',
+        title: 'Windowing',
+        path: '/other/windowing',
+      },
+      {
+        id: 'code-splitting',
+        title: 'Code Splitting',
+        path: '/other/code-splitting',
+      },
+      {
+        id: 'code-splitting-adaptive-loading',
+        title: 'Code Splitting + Adaptive Loading',
+        path: '/other/code-splitting-adaptive-loading',
+      },
+      {
+        id: 'data-oriented-design',
+        title: 'Data-Oriented Design (Custom)',
+        path: '/other/data-oriented-design',
+      },
+      {
+        id: 'data-oriented-design-koota',
+        title: 'Data-Oriented Design (Koota)',
+        path: '/other/data-oriented-design-koota',
+      },
+    ],
+  },
+];
+
+//  ---------------------------------------------------------------------------
+//  UI: CORE
+//  ---------------------------------------------------------------------------
+
+export default function Sidebar() {
+  const location = useLocation();
+  const [expandedSections, setExpandedSections] = useState<
+    Record<string, boolean>
+  >({});
+
+  const isExampleActive = (path: string) => {
+    return location.pathname === path;
+  };
+
+  const toggleSection = (sectionId: string) => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      [sectionId]: !prev[sectionId],
+    }));
+  };
+
+  const isSectionActive = (section: Section) => {
+    return section.examples.some((example) => isExampleActive(example.path));
+  };
+
+  for (const section of sections) {
+    if (isSectionActive(section) && !expandedSections[section.id]) {
+      expandedSections[section.id] = true;
+    }
+  }
+
+  return (
+    <aside className="w-72 border-r border-border bg-muted/30 h-full overflow-y-auto hidden md:block">
+      <div className="p-4 space-y-4">
+        <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3">
+          Categories
+        </div>
+        <nav className="space-y-1">
+          {sections.map((section) => {
+            const isActive = isSectionActive(section);
+            const isExpanded = expandedSections[section.id] || isActive;
+
+            return (
+              <div key={section.id} className="space-y-0.5">
+                <button
+                  type="button"
+                  onClick={() => toggleSection(section.id)}
+                  className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                    isActive
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-foreground/70 hover:bg-accent hover:text-accent-foreground'
+                  }`}
+                >
+                  <span className="mr-2">
+                    {isExpanded ? (
+                      <ChevronDown className="h-4 w-4" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4" />
+                    )}
+                  </span>
+                  <span className="truncate">{section.title}</span>
+                  <span className="ml-auto bg-muted text-muted-foreground rounded-full px-2 py-0.5 text-xs tabular-nums">
+                    {section.examples.length}
+                  </span>
+                </button>
+
+                {isExpanded && section.examples.length > 0 && (
+                  <div className="ml-4 border-l border-border pl-2 space-y-0.5 mt-0.5">
+                    {section.examples.map((example) => (
+                      <Link
+                        key={example.id}
+                        to={example.path}
+                        className={`block px-3 py-1.5 text-sm rounded-md transition-colors ${
+                          isExampleActive(example.path)
+                            ? 'bg-primary/10 text-primary font-medium'
+                            : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                        }`}
+                      >
+                        {example.title}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </nav>
+      </div>
+    </aside>
+  );
+}
