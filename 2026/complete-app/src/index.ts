@@ -6,6 +6,7 @@ import { authenticate } from './middleware/auth.ts';
 import { requireRole } from './middleware/requireRole.ts';
 import { addSingleProduct, deleteSingleProduct, getProducts, getSingleProduct, updateSingleProduct } from './routes/products/index.ts';
 import { placeOrder } from './routes/orders/index.ts';
+import jwt from 'jsonwebtoken'
 
 import http from 'http';
 import { ApolloServer } from '@apollo/server';
@@ -14,6 +15,7 @@ import { resolvers } from './graphql/resolvers/index.ts';
 import { typeDefs } from './graphql/typedefs/index.ts';
 import { expressMiddleware } from '@as-integrations/express5';
 import cors from 'cors';
+import type { AuthTokenPayload } from './type.ts';
 
 const app: Express = express();
 const httpServer = http.createServer(app);
@@ -38,7 +40,27 @@ await server.start();
 app.use(
   '/graphql',
   cors(),
-  expressMiddleware(server),
+  expressMiddleware(server, {
+    // Your async context function should async and
+    // return an object
+    context: async ({ req, res }) => {
+      const bearerToken = req.headers['authorization']
+      const token = bearerToken && bearerToken.split(' ')[1];
+
+      console.log('token', token)
+
+      if (token == null || !process.env.JWT_SECRET) {
+        return { currentUser: null }
+      }
+      try {
+        const user = jwt.verify(token, process.env.JWT_SECRET) as AuthTokenPayload;
+        console.log('here')
+        return { currentUser: user };
+      } catch {
+        return { currentUser: null };
+      }
+    },
+  }),
 );
 
 app.get('/', (req: Request, res: Response) => {

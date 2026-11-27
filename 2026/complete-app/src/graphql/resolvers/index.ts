@@ -1,6 +1,9 @@
 
 export const resolvers = {
   Query: {
-    ping: () => 'test',
+    ping: (_parent, _args, context) => {
+      console.log(context.currentUser);
+      return 'test';
+    },
   },
 };
