@@ -1,0 +1,129 @@
+openapi: 3.0.3
+info:
+  title: DummyJSON Products API
+  version: 1.0.0
+  description: |
+    OpenAPI example for DummyJSON's public Products API.
+    This spec describes list and single product endpoints.
+servers:
+  - url: https://dummyjson.com
+
+paths:
+  /products:
+    get:
+      summary: Get all products
+      description: Returns a list of products from DummyJSON
+      responses:
+        '200':
+          description: List of products
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  products:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+                  total:
+                    type: integer
+                  skip:
+                    type: integer
+                  limit:
+                    type: integer
+              examples:
+                list:
+                  value:
+                    products:
+                      - id: 1
+                        title: iPhone 9
+                        description: An apple mobile which is nothing like apple
+                        price: 549
+                        brand: Apple
+                        category: smartphones
+                        thumbnail: https://dummyjson.com/image/i/products/1/thumbnail.jpg
+                    total: 100
+                    skip: 0
+                    limit: 30
+        '404':
+          description: Product list was not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                notFound:
+                  value:
+                    message: Product list was not found
+
+  /products/{id}:
+    get:
+      summary: Get product by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Unique product ID
+      responses:
+        '200':
+          description: A single product by its ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+              examples:
+                product:
+                  value:
+                    id: 1
+                    title: iPhone 9
+                    description: An apple mobile which is nothing like apple
+                    price: 549
+                    brand: Apple
+                    category: smartphones
+                    thumbnail: https://dummyjson.com/image/i/products/1/thumbnail.jpg
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                notFound:
+                  value:
+                    message: Product not found
+
+components:
+  schemas:
+    Product:
+      type: object
+      required:
+        - id
+        - title
+        - description
+        - price
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: float
+        brand:
+          type: string
+        category:
+          type: string
+        thumbnail:
+          type: string
+          format: uri
+        # Add other optional properties here, such as rating, stock, images, etc.

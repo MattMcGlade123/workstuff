@@ -1,0 +1,1 @@
+{"version":3,"file":"listing-api.d.ts","sourceRoot":"","sources":["../../src/datasources/listing-api.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,cAAc,EAAE,MAAM,yBAAyB,CAAC;AACzD,OAAO,EAAE,OAAO,EAAE,MAAM,UAAU,CAAC;AAEnC,qBAAa,UAAW,SAAQ,cAAc;IAC5C,OAAO,SAAwD;IAE/D,mBAAmB;CAGpB"}

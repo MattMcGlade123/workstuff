@@ -1,0 +1,105 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.resolvers = void 0;
+const helpers_1 = require("./helpers");
+const errorHandling_1 = require("./errorHandling");
+exports.resolvers = {
+    Query: {
+        featuredListings: (_, __, { dataSources }) => {
+            return dataSources.listingAPI.getFeaturedListings();
+        },
+        listing: (_, { id }, { dataSources }) => {
+            return dataSources.listingAPI.getListing(id);
+        },
+        productList: (_, __, { dataSources }) => {
+            return dataSources.productAPI.getProductList();
+        },
+        aProduct: (_, { productSlug }, { dataSources }) => {
+            return dataSources.productAPI.getAProduct(productSlug).then((response) => {
+                const generateId = () => Math.random().toString(36).slice(2);
+                const thisProduct = response.products[0];
+                return {
+                    ...thisProduct,
+                    _id: thisProduct._id || generateId()
+                };
+            });
+        },
+    },
+    Product: {
+        formattedPrice: (product) => {
+            return `£${(product.price / 100).toFixed(2)}`;
+        },
+    },
+    Listing: {
+        amenities: ({ id, amenities }, _, { dataSources }) => {
+            return (0, helpers_1.validateFullAmenities)(amenities)
+                ? amenities
+                : dataSources.listingAPI.getAmenities(id);
+        }
+    },
+    Mutation: {
+        signIn: async (_, { input }, { dataSources }) => {
+            try {
+                const response = await dataSources.productAPI.signIn(input);
+                return {
+                    code: 200,
+                    success: true,
+                    message: "User successfully logged in!",
+                    token: response.token,
+                };
+            }
+            catch (err) {
+                const status = err.extensions?.response?.status;
+                if (status === 403) {
+                    return (0, errorHandling_1.errorHandling)(status, err.extensions?.response?.body?.message);
+                }
+                if (err.extensions?.response?.status === 400) {
+                    return {
+                        code: 400,
+                        success: false,
+                        message: "Bad request - missing required fields",
+                        token: null,
+                    };
+                }
+                return {
+                    code: 500,
+                    success: false,
+                    message: "Something went wrong. Please try again later.",
+                    token: null,
+                };
+            }
+        },
+        register: async (_, { input }, { dataSources }) => {
+            try {
+                const response = await dataSources.productAPI.register(input);
+                return {
+                    code: 200,
+                    success: true,
+                    message: "User successfully registered!",
+                    token: response.token,
+                };
+            }
+            catch (err) {
+                const status = err.extensions?.response?.status;
+                if (status === 403) {
+                    return (0, errorHandling_1.errorHandling)(status, err.extensions?.response?.body?.message);
+                }
+                if (err.extensions?.response?.status === 400) {
+                    return {
+                        code: 400,
+                        success: false,
+                        message: "Bad request - missing required fields",
+                        token: null,
+                    };
+                }
+                return {
+                    code: 500,
+                    success: false,
+                    message: "Something went wrong. Please try again later.",
+                    token: null,
+                };
+            }
+        },
+    },
+};
+//# sourceMappingURL=resolvers.js.map

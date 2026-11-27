@@ -1,0 +1,1 @@
+{"version":3,"file":"resolvers.js","sourceRoot":"","sources":["../src/resolvers.ts"],"names":[],"mappings":";;;AAEa,QAAA,SAAS,GAAe;IACnC,KAAK,EAAE;QACL,gBAAgB,EAAE,CAAC,CAAC,EAAE,EAAE,EAAE,EAAE,WAAW,EAAE,EAAE,EAAE;YAC3C,OAAO,WAAW,CAAC,UAAU,CAAC,mBAAmB,EAAE,CAAC;QACtD,CAAC;KACF;CACF,CAAC"}
