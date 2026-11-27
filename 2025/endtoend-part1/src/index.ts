@@ -6,7 +6,7 @@ import compression from 'compression';
 import cors from 'cors';
 const mongoose = require("mongoose");
 const PORT = 8080;
-const mongodbDataBaseUrl = "mongodb://127.0.0.1:27017/shop"
+const mongodbDataBaseUrl = process.env.MONGODB_URL || "mongodb://127.0.0.1:27017/shop"
 import router from './router'
 
 const app = express();

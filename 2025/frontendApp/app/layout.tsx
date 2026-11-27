@@ -6,6 +6,7 @@ import Header from '@/components/Header';
 
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
+import { ApolloWrapper } from './ApolloWrapper';
 config.autoAddCss = false
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
@@ -17,7 +18,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             <ClientLayout>
               <Header />
               <main>
-                {children}
+                <ApolloWrapper>{children}</ApolloWrapper>
               </main>
             </ClientLayout>
           </StyledComponentsRegistry>

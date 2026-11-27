@@ -93,9 +93,7 @@ const ProductFormLogic: FC = () => {
         alt: completeData['image-alt']
       }
     }
-    console.log('completeData', completeData)
     const hasAllData = validateData(dataToValidate)
-    console.log('hasAllData', hasAllData)
 
     if (hasAllData) {
       const { finalData, error } = await fetchData<{ data: AddResponse , error: any }>('http://localhost:8080/add', {

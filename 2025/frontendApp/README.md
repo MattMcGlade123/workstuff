@@ -1,26 +1,83 @@
-## Getting Started
+# GraphQL Learning App
 
-To begin, clone the project. Once cloned, you need to install all the dependencies for the site. To do this you need to have `Yarn` and `Node v20.9.0` installed and in the root level run.
+A test app for experimenting with GraphQL, Apollo Client, and Next.js. Just a playground to mess around with different concepts - nothing serious!
 
-`yarn`
+## What's This?
 
-## Unit Testing
+This is my learning sandbox for GraphQL and Apollo. It's a fake food product site where I can:
 
-We use [React Testing Library](https://testing-library.com/) to unit test our components.
+- Test GraphQL queries and mutations
+- Play with Apollo Client features  
+- Try out authentication flows
+- Experiment with Next.js App Router
+- Practice component patterns
 
-To Run the test suite, use the command `yarn test` at the root. This will run test on all test in every package.
+The data is all fake and the "products" are just stock food images. Perfect for breaking things without consequences! 😄
 
-If creating a new test for a component, add a file at the root of the component folder named `[ComponentName].test.{js|tsx}`. After writing the tests withing this file, you can run `yarn test` and the test suite will pick up your new component tests and run them alongside the rest.
+## 🛠️ What I'm Playing With
 
+- **Next.js 15** - App Router and all that
+- **Apollo Client** - The main thing I'm learning
+- **GraphQL** - Queries, mutations, the works
+- **TypeScript** - Because I like types
+- **Styled Components** - For styling
+- **Redux Toolkit** - State stuff
+- **Jest** - Testing when I remember to
 
-## Tools
+## 🚀 Getting Started
 
-This package uses the following tools
+Need Node.js v20.9.0 and Yarn. Then:
 
-NextJs
-Redux Toolkit
-Jest
-React Testing Library
-Styled components
+```bash
+yarn
+yarn dev
+```
 
-I've also used a number of linting packages to help maintain the code quality
+Open [http://localhost:3000](http://localhost:3000) and start breaking things!
+
+## 📜 Useful Commands
+
+- `yarn dev` - Start the app
+- `yarn test` - Run tests (if you're into that)
+- `yarn generate` - Generate GraphQL types
+- `yarn lint` - Check your code
+
+## 📁 Component Structure
+
+All components follow a consistent pattern for maintainability and clarity:
+
+```
+ComponentName/
+├── index.tsx              # Simple export wrapper
+├── ComponentNameLogic.tsx # Main component logic and state
+├── ComponentNameStructure.tsx # JSX structure and rendering
+└── ComponentNameStyles.tsx # Styled components and CSS
+```
+
+### Example Component Structure
+```tsx
+// index.tsx
+import React from 'react';
+import ComponentNameLogic from './ComponentNameLogic';
+
+const ComponentName = (props: any) => {
+  return <ComponentNameLogic {...props} />;
+};
+
+export default ComponentName;
+```
+
+This pattern separates concerns cleanly:
+- **Logic**: State management, event handlers, side effects
+- **Structure**: JSX, props handling, component composition  
+- **Styles**: Styled components, themes, responsive design
+- **Index**: Clean public API for the component
+
+## ⚡ Quick Notes
+
+- Forms use FormData (no controlled inputs because why make life hard?)
+- Auth state lives in Redux
+- GraphQL types get auto-generated
+- Components follow the Logic/Structure/Styles pattern
+
+That's about it! It's just a playground, so feel free to experiment. 🧪

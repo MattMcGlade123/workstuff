@@ -2,12 +2,33 @@
 
 import { StyleContainer } from './RegisterStyles';
 import { FC } from 'react';
-import RegisterForm from '@/components/RegisterForm';
+import AuthForm from '@/components/AuthForm';
 
 const RegisterStructure: FC = () => {
+  const registerFields = [
+    {
+      name: 'email',
+      label: 'Enter email',
+      placeholder: 'test@testing.com',
+      type: 'email'
+    },
+    {
+      name: 'username',
+      label: 'Enter Username',
+      placeholder: 'username',
+      type: 'text'
+    },
+    {
+      name: 'password',
+      label: 'Enter Password',
+      placeholder: 'a password',
+      type: 'password'
+    }
+  ];
+
   return (
     <StyleContainer>
-      <RegisterForm />
+      <AuthForm type="register" fields={registerFields} />
     </StyleContainer>
   );
 }

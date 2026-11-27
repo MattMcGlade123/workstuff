@@ -1,22 +1,33 @@
 'use client';
 
-import React, { FC, FormEvent, useCallback, useState } from 'react';
+import React, { FC, FormEvent, useCallback, useEffect, useState } from 'react';
+
+import { ApolloError, useMutation } from '@apollo/client';
 
 import LoginFormStructure from './LoginFormStructure';
-import { LoginFormInt, LoginResponse } from '@/custom-type';
-import { fetchData } from '@/utils/fetchData';
+import { LoginFormInt } from '@/custom-type';
 import { validateData } from '@/utils/validateData';
 import { useDispatch } from 'react-redux';
 import { updateIsAuth } from '@/features/auth';
-
+import { SIGNIN } from '@/graphQl/queries';
+import { SignInResponse } from '@/types/middleware-types';
 
 const LoginFormLogic: FC = () => {
   const dispatch = useDispatch();
-  const [fetchMessage, setFetchMessage] = useState('');
+  const [fetchMessage, setFetchMessage] = useState<string>();
+  const [errorMessage, setErrorMessage] = useState<ApolloError>();
   const [formValues, setFormValues] = useState<LoginFormInt>({
     email: '',
     password: '',
   });
+
+  const [signUserIn, { data, error }] = useMutation<{ signIn: SignInResponse, error: any }>(SIGNIN);
+
+  const cleanup = () => {
+    setFetchMessage('')
+    setErrorMessage(undefined)
+    localStorage.removeItem('product-api-token')
+  }
 
   const handleType = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
@@ -50,37 +61,22 @@ const LoginFormLogic: FC = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    cleanup();
     const formDataObject = new FormData(e.currentTarget);
     const completeData = Object.fromEntries(formDataObject.entries()) as unknown as LoginFormInt;
-    const dataToValidate = {
+    const userLoginData = {
       email: completeData.email,
       password: completeData.password,
     }
 
-    const hasAllData = validateData(dataToValidate)
+    const hasAllData = validateData(userLoginData)
 
     if (hasAllData) {
-      const { finalData, error } = await fetchData<LoginResponse>('http://localhost:8080/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataToValidate),
-      })
-
-      if (error) {
-        setFetchMessage(error)
-      }
-      else if (finalData?.error) {
-        setFetchMessage(finalData?.error)
-      }
-      else {
-        setFetchMessage('Logged in successfully')
-        if (finalData?.token) {
-          localStorage.setItem('product-api-token', finalData?.token)
+      signUserIn({
+        variables: {
+          input: userLoginData
         }
-        dispatch(updateIsAuth(true));
-      }
+      })
     }
     else {
       setFetchMessage('Missing required data')
@@ -91,10 +87,36 @@ const LoginFormLogic: FC = () => {
     }
   }
 
+  useEffect(() => {
+    if (error) {
+      cleanup()
+      setErrorMessage(error)
+    }
+    else if (data) {
+      if (data?.error) {
+        cleanup()
+        setErrorMessage(data?.error)
+      }
+      else if (data?.signIn?.code === 403) {
+        cleanup()
+        setErrorMessage({ message: data.signIn.message } as ApolloError);
+      }
+      else if (data?.signIn?.code === 200) {
+        setFetchMessage('Logged in successfully')
+        setErrorMessage(undefined)
+        if (data?.signIn?.token) {
+          localStorage.setItem('product-api-token', data?.signIn.token)
+        }
+        dispatch(updateIsAuth(true));
+      }
+    }
+  }, [data, error])
+
   const componentProps = {
     handleSubmit,
     handleType,
-    fetchMessage
+    fetchMessage,
+    errorMessage
   }
 
   return <LoginFormStructure {...componentProps

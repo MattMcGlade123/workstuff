@@ -8,6 +8,12 @@ import { fetchData } from '@/utils/fetchData';
 
 const AddProductLogic: FC = () => {
   const [isAuthed, setIsAuthed] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const updateStates = (loadingState: boolean, authState: boolean) => {
+    setIsLoading(loadingState);
+    setIsAuthed(authState);
+  }
 
   const checkAuthStatus = async () => {
     const token = localStorage.getItem('product-api-token');
@@ -22,13 +28,16 @@ const AddProductLogic: FC = () => {
     })
 
     if (error) {
-      setIsAuthed(false)
+      updateStates(false, false);
     }
     else if (finalData?.error) {
-      setIsAuthed(false)
+      updateStates(false, false);
+    }
+    else if (finalData?.authenticated === false) {
+      updateStates(false, false);
     }
     else {
-      setIsAuthed(true)
+      updateStates(false, true)
     }
   }
 
@@ -37,6 +46,7 @@ const AddProductLogic: FC = () => {
   }, []);
 
   const componentProps = {
+    isLoading,
     isAuthed
   }
 
