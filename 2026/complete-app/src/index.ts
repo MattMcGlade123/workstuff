@@ -7,7 +7,16 @@ import { requireRole } from './middleware/requireRole.ts';
 import { addSingleProduct, deleteSingleProduct, getProducts, getSingleProduct, updateSingleProduct } from './routes/products/index.ts';
 import { placeOrder } from './routes/orders/index.ts';
 
+import http from 'http';
+import { ApolloServer } from '@apollo/server';
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import { resolvers } from './graphql/resolvers/index.ts';
+import { typeDefs } from './graphql/typedefs/index.ts';
+import { expressMiddleware } from '@as-integrations/express5';
+import cors from 'cors';
+
 const app: Express = express();
+const httpServer = http.createServer(app);
 
 try {
   await connectDB()
@@ -17,6 +26,20 @@ try {
 }
 
 app.use(express.json());
+
+// Set up Apollo Server
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+});
+await server.start();
+
+app.use(
+  '/graphql',
+  cors(),
+  expressMiddleware(server),
+);
 
 app.get('/', (req: Request, res: Response) => {
   res.status(200).send("WELCOME");
@@ -41,6 +64,8 @@ app.use((req, res, next) => {
   res.status(404).send("Sorry can't find that!");
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`🥳 Server running on port ${process.env.PORT} 🥳`);
+await new Promise<void>((resolve) => {
+  httpServer.listen({ port: process.env.PORT }, resolve);
 });
+console.log(`🥳 Server running on port ${process.env.PORT}`);
+console.log(`GraphQL at http://localhost:${process.env.PORT}/graphql`);
