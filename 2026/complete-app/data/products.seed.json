@@ -1,0 +1,86 @@
+[
+  {
+    "title": "Wireless Mouse",
+    "description": "Ergonomic wireless mouse with silent clicks and USB-C receiver.",
+    "price": 24.99,
+    "stockQuantity": 120,
+    "category": "electronics"
+  },
+  {
+    "title": "Mechanical Keyboard",
+    "description": "Compact 75% mechanical keyboard with hot-swappable switches.",
+    "price": 89.99,
+    "stockQuantity": 45,
+    "category": "electronics"
+  },
+  {
+    "title": "USB-C Hub",
+    "description": "7-in-1 hub with HDMI, USB-A, SD card reader, and 100W passthrough.",
+    "price": 49.5,
+    "stockQuantity": 80,
+    "category": "electronics"
+  },
+  {
+    "title": "Noise Cancelling Headphones",
+    "description": "Over-ear headphones with active noise cancellation and 30-hour battery.",
+    "price": 149.0,
+    "stockQuantity": 30,
+    "category": "electronics"
+  },
+  {
+    "title": "Laptop Stand",
+    "description": "Aluminium adjustable laptop stand for better desk posture.",
+    "price": 34.99,
+    "stockQuantity": 60,
+    "category": "accessories"
+  },
+  {
+    "title": "Desk Mat",
+    "description": "Large waterproof desk mat with stitched edges.",
+    "price": 19.99,
+    "stockQuantity": 200,
+    "category": "accessories"
+  },
+  {
+    "title": "Webcam 1080p",
+    "description": "Full HD webcam with built-in microphone for video calls.",
+    "price": 59.99,
+    "stockQuantity": 55,
+    "category": "electronics"
+  },
+  {
+    "title": "Portable SSD 1TB",
+    "description": "Fast external SSD with USB-C and shock-resistant casing.",
+    "price": 109.99,
+    "stockQuantity": 40,
+    "category": "storage"
+  },
+  {
+    "title": "HDMI Cable 2m",
+    "description": "High-speed HDMI 2.1 cable supporting 4K and 120Hz.",
+    "price": 12.99,
+    "stockQuantity": 300,
+    "category": "cables"
+  },
+  {
+    "title": "Monitor Light Bar",
+    "description": "Screen-mounted LED light bar with adjustable brightness and colour temperature.",
+    "price": 39.99,
+    "stockQuantity": 70,
+    "category": "accessories"
+  },
+  {
+    "title": "Bluetooth Speaker",
+    "description": "Compact waterproof Bluetooth speaker with 12-hour playtime.",
+    "price": 44.99,
+    "stockQuantity": 90,
+    "category": "audio"
+  },
+  {
+    "title": "Phone Tripod",
+    "description": "Flexible phone tripod with Bluetooth remote shutter.",
+    "price": 16.5,
+    "stockQuantity": 150,
+    "category": "accessories"
+  }
+]

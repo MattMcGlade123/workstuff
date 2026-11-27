@@ -1,0 +1,166 @@
+import { createBrowserRouter } from 'react-router-dom';
+
+import DemoAstGrep from '@components/demos/compiling/ast-grep';
+import DemoJscodeshiftCustom from '@components/demos/compiling/jscodeshift-custom';
+import DemoJscodeshiftOss from '@components/demos/compiling/jscodeshift-oss';
+import DemoTsMorph from '@components/demos/compiling/ts-morph';
+import DemoBehaviorDeadClicks from '@components/demos/measuring-behavior/dead-clicks';
+import DemoBehaviorErraticMouse from '@components/demos/measuring-behavior/erratic-mouse';
+import DemoBehaviorRageClicks from '@components/demos/measuring-behavior/rage-clicks';
+import DemoBehaviorScrolling from '@components/demos/measuring-behavior/scrolling';
+import DemoJquery from '@components/demos/measuring/jquery';
+import DemoReactGrab from '@components/demos/measuring/react-grab';
+import DemoReactScan from '@components/demos/measuring/react-scan';
+import DemoCodeSplitting from '@components/demos/other/code-splitting';
+import DemoAdaptiveLoading from '@components/demos/other/code-splitting-adaptive-loading';
+import DemoDataOrientedDesign from '@components/demos/other/data-oriented-design/custom.index';
+import DemoDataOrientedDesignKoota from '@components/demos/other/data-oriented-design/koota.index';
+import DemoWindowing from '@components/demos/other/windowing';
+import DemoFibersCustom from '@components/demos/scheduling/fibers/custom';
+import DemoFibersItsFine from '@components/demos/scheduling/fibers/its-fine';
+import DemoJankInputBefore from '@components/demos/scheduling/jank-input';
+import DemoJankInputWithScheduler from '@components/demos/scheduling/jank-input-scheduler';
+import DemoBlockMainThread from '@components/demos/scheduling/long-tasks';
+import DemoSuspendReact from '@components/demos/scheduling/suspend-react';
+import DemoUseRouterSelectorAfter from '@components/demos/scheduling/use-router-selector/after';
+import DemoUseRouterSelectorBefore from '@components/demos/scheduling/use-router-selector/before';
+
+import HomePage from '@components/pages/home';
+import NotFoundPage from '@components/pages/not-found';
+
+import RootLayout from '@components/layouts/layout-root';
+
+export const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <RootLayout />,
+    errorElement: <NotFoundPage />,
+    children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
+      {
+        path: 'scheduling',
+        children: [
+          {
+            path: 'custom',
+            element: <DemoFibersCustom />,
+          },
+          {
+            path: 'its-fine',
+            element: <DemoFibersItsFine />,
+          },
+          {
+            path: 'long-tasks',
+            element: <DemoBlockMainThread />,
+          },
+          {
+            path: 'suspend-react',
+            element: <DemoSuspendReact />,
+          },
+          {
+            path: 'jank-input/before',
+            element: <DemoJankInputBefore />,
+          },
+          {
+            path: 'jank-input/after',
+            element: <DemoJankInputWithScheduler />,
+          },
+          {
+            path: 'use-history-selector/before',
+            element: <DemoUseRouterSelectorBefore />,
+          },
+          {
+            path: 'use-history-selector/after',
+            element: <DemoUseRouterSelectorAfter />,
+          },
+        ],
+      },
+      {
+        path: 'measuring',
+        children: [
+          {
+            path: 'jquery',
+            element: <DemoJquery />,
+          },
+          {
+            path: 'react-scan',
+            element: <DemoReactScan />,
+          },
+          {
+            path: 'react-grab',
+            element: <DemoReactGrab />,
+          },
+        ],
+      },
+      {
+        path: 'measuring-behavior',
+        children: [
+          {
+            path: 'rage-clicks',
+            element: <DemoBehaviorRageClicks />,
+          },
+          {
+            path: 'dead-clicks',
+            element: <DemoBehaviorDeadClicks />,
+          },
+          {
+            path: 'scrolling',
+            element: <DemoBehaviorScrolling />,
+          },
+          {
+            path: 'erratic-mouse',
+            element: <DemoBehaviorErraticMouse />,
+          },
+        ],
+      },
+      {
+        path: 'compiling',
+        children: [
+          {
+            path: 'jscodeshift-oss',
+            element: <DemoJscodeshiftOss />,
+          },
+          {
+            path: 'jscodeshift-custom',
+            element: <DemoJscodeshiftCustom />,
+          },
+          {
+            path: 'ast-grep',
+            element: <DemoAstGrep />,
+          },
+          {
+            path: 'ts-morph',
+            element: <DemoTsMorph />,
+          },
+        ],
+      },
+      {
+        path: 'other',
+        children: [
+          {
+            path: 'windowing',
+            element: <DemoWindowing />,
+          },
+          {
+            path: 'code-splitting',
+            element: <DemoCodeSplitting />,
+          },
+          {
+            path: 'code-splitting-adaptive-loading',
+            element: <DemoAdaptiveLoading />,
+          },
+          {
+            path: 'data-oriented-design',
+            element: <DemoDataOrientedDesign />,
+          },
+          {
+            path: 'data-oriented-design-koota',
+            element: <DemoDataOrientedDesignKoota />,
+          },
+        ],
+      },
+    ],
+  },
+]);
